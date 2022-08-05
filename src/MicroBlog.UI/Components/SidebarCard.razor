@@ -1,0 +1,18 @@
+﻿<div class="card border-light mb-4">
+    <div class="card-body">
+        <h5 class="card-title">@Title</h5>
+        <div class="card-content">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = "Title";
+    
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

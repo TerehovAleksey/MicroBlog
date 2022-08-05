@@ -1,0 +1,24 @@
+﻿@using MicroBlog.UI.Services
+@using MicroBlog.UI.Models
+@inject IPostService PostService
+
+@if (_posts is not null)
+{
+    <SidebarCard Title="Most Popular">
+        @foreach (var post in _posts)
+        {
+            <SidebarPost Post="post"/>
+        }
+    </SidebarCard>
+}
+
+@code {
+
+    private IEnumerable<BasePostModel>? _posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _posts = await PostService.GetMostPopularPostsAsync();
+    }
+
+}

@@ -1,0 +1,66 @@
+﻿@using MicroBlog.UI.Services
+@inject IFilterService FilterService
+
+<header class="header">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light">
+        <div class="container">
+            @if (!_isSearchMode)
+            {
+                <div class="d-flex align-items-center">
+                    <div class="header-logo me-3">
+                        <a href="/">
+                            <img src="img/logo.png" alt="logo" data-height="50" data-width="187">
+                        </a>
+                    </div>
+                    <div class="header-menu">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Mega Menu</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Download This Template</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="oi oi-magnifying-glass" style="cursor: pointer;" @onclick="() => _isSearchMode = true"></span>
+            }
+            else
+            {
+                <EditForm Model="_searchModel" OnValidSubmit="SearchSubmit">
+                    <InputText id="search" @bind-Value="_searchModel.Query" placeholder="Search this blog"/>
+                    <input style="display: none;" type="submit"/>
+                </EditForm>
+                <span class="oi oi-x" style="cursor: pointer;" @onclick="() => _isSearchMode = false"></span>
+            }
+        </div>
+    </nav>
+</header>
+
+@code {
+    private bool _isSearchMode;
+
+    private SearchModel _searchModel = new();
+
+    private void SearchSubmit()
+    {
+        FilterService.SearchByQuery(_searchModel.Query);
+        _searchModel.Query = string.Empty;
+        _isSearchMode = false;
+    }
+    
+    private class SearchModel
+    {
+        public string Query { get; set; } = string.Empty;
+    }
+
+}

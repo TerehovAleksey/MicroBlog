@@ -1,0 +1,32 @@
+﻿.query-message {
+    overflow: hidden;
+    background-color: #fff;
+    color: #000000;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 10px;
+    margin: 0 0 25px;
+    border: 1px solid #ebebf3;
+    border-radius: 3px;
+}
+
+.query-info {
+    margin: 0 5px;
+}
+
+.search-label {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.show-more{
+    float: right;
+    color: #598cff;
+    text-decoration: underline;
+    transition: opacity .17s;
+    border: none;
+    background: transparent;
+}
+.show-more:hover{
+    opacity: .8;
+}

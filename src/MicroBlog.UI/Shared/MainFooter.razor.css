@@ -1,0 +1,44 @@
+﻿footer {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background-color: #111111;
+    padding: 15px 0;
+}
+
+.footer-copyright {
+    font-size: 13px;
+    display: block;
+    height: 34px;
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 34px;
+}
+
+.footer-copyright a {
+    color: #0be6af;
+}
+
+.oi-heart{
+    color: red;
+    margin: 0 2px;
+}
+
+.footer-menu-item {
+    display: inline-block;
+    height: 34px;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-menu-item a {
+    font-size: 11px;
+    font-weight: 500;
+    display: block;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 34px;
+    padding: 0 10px;
+    margin: 0 0 0 5px;
+    transition: color .17s ease;
+}

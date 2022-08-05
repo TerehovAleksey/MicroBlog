@@ -1,0 +1,33 @@
+﻿ul {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    list-style: none;
+}
+
+li {
+    list-style: none;
+    position: relative;
+    float: left;
+    margin: 0 5px 5px 0;
+}
+
+button {
+    display: block;
+    height: 26px;
+    background-color: #fdfdff;
+    color: #000000;
+    font-size: 12px;
+    line-height: 26px;
+    font-weight: 400;
+    padding: 0 10px;
+    border: 1px solid #f2f2f6;
+    border-radius: 3px;
+    transition: all .17s ease;
+}
+
+button:hover {
+    color: #fff;
+    background-color: #598cff;
+    border-color: #598cff;
+}

@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.7" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Black.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-BlackItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Bold.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-BoldItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-ExtraBold.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-ExtraBoldItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-ExtraLight.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-ExtraLightItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Italic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Light.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-LightItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Medium.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-MediumItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Regular.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-SemiBold.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-SemiBoldItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-Thin.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\FiraSans-ThinItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\fonts\firasans\OFL.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Black.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-BlackItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Bold.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-BoldItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ExtraBold.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ExtraBoldItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ExtraLight.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ExtraLightItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Italic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Light.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-LightItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Medium.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-MediumItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Regular.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-SemiBold.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-SemiBoldItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Thin.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ThinItalic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\OFL.txt" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+﻿@using MicroBlog.UI.Services
+@inject IYoutubeService YoutubeService
+
+@if (!string.IsNullOrEmpty(_src))
+{
+    <SidebarCard Title="Last on YouTube">
+        <SidebarIframe Src="@_src"/>
+    </SidebarCard>
+}
+
+@code {
+    private string? _src;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _src = await YoutubeService.GetLastVideo();
+    }
+
+}

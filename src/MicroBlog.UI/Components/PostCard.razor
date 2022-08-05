@@ -1,0 +1,44 @@
+﻿@using MicroBlog.UI.Models
+@using MicroBlog.UI.Services
+@inject IFilterService FilterService
+
+<div class="card border-light mb-4">
+    <div class="card-body">
+        <h5 class="card-title">
+            <NavLink href="/post">@CardModel.Title</NavLink>
+        </h5>
+        <h6 class="card-subtitle mb-2">
+            <button class="post-tag" @onclick="() => FilterService.SearchByTag(CardModel.Tag)">
+                <span class="oi oi-tag"></span>
+                @CardModel.Tag
+            </button>
+            <button class="post-author" @onclick="() => FilterService.SearchByAuthor(CardModel.Author)">
+                <span class="oi oi-person ms-2"></span>
+                @CardModel.Author
+            </button>
+            <button class="post-date" @onclick="() => FilterService.SearchByDate(CardModel.Date.ToString())">
+                <span class="oi oi-clock ms-2"></span>
+                @CardModel.Date.ToString()
+            </button>
+        </h6>
+        <div class="post-info">
+            <div class="post-image">
+                <a class="post-image-link" href="#">
+                    <img class="post-thumb" src="@CardModel.ImageUri" alt="card">
+                </a>
+            </div>
+            <div class="post-index ms-2">
+                <p>
+                    @CardModel.Text
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public PostCardModel CardModel { get; set; } = new();
+
+}

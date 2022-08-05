@@ -1,0 +1,29 @@
+﻿@using MicroBlog.UI.Services
+@inject IPostService PostService
+@inject IFilterService FilterService
+
+@if (_tags is not null)
+{
+    <SidebarCard Title="Tags">
+        <ul>
+            @foreach (var tag in _tags)
+            {
+                <li>
+                    <button @onclick="() => FilterService.SearchByTag(tag)">
+                        @tag
+                    </button>
+                </li>
+            }
+        </ul>
+    </SidebarCard>
+}
+
+@code {
+
+    private IEnumerable<string>? _tags;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _tags = await PostService.GetAllTagsAsync();
+    }
+}

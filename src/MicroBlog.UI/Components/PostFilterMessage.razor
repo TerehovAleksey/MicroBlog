@@ -1,0 +1,58 @@
+﻿@using MicroBlog.UI.Models
+@using MicroBlog.UI.Services
+@inject IFilterService FilterService
+
+@if (IsShowFilterMessage)
+{
+    <div class="query-message">
+        <span class="query-info">
+            @GetText()
+            <span class="search-label">@GetLabel()</span>
+        </span>
+        <button class="show-more" @onclick="() => FilterService.Reset()">Show All</button>
+    </div>
+}
+
+@code {
+    
+    [Parameter]
+    public PostFilter? Filter { get; set; }
+
+    private bool IsShowFilterMessage => Filter is not null &&
+                                        (!string.IsNullOrEmpty(Filter.Tag) || !string.IsNullOrEmpty(Filter.Author) ||
+                                         !string.IsNullOrEmpty(Filter.Date) || !string.IsNullOrEmpty(Filter.Query));
+
+    private string GetText()
+    {
+        if (!string.IsNullOrEmpty(Filter?.Query))
+        {
+            return "Showing posts matching the search for";
+        }
+        if (!string.IsNullOrEmpty(Filter?.Tag))
+        {
+            return "Showing posts with the label";
+        }
+        if (!string.IsNullOrEmpty(Filter?.Author))
+        {
+            return "Showing posts by";
+        }
+        return !string.IsNullOrEmpty(Filter?.Date) ? "Showing posts for" : string.Empty;
+    }
+    
+    private string GetLabel()
+    {
+        if (!string.IsNullOrEmpty(Filter?.Query))
+        {
+            return Filter.Query;
+        }
+        if (!string.IsNullOrEmpty(Filter?.Tag))
+        {
+            return Filter.Tag;
+        }
+        if (!string.IsNullOrEmpty(Filter?.Author))
+        {
+            return Filter.Author;
+        }
+        return !string.IsNullOrEmpty(Filter?.Date) ? Filter.Date : string.Empty;
+    }
+}

@@ -1,0 +1,69 @@
+﻿@page "/"
+@using MicroBlog.UI.Services
+@using MicroBlog.UI.Models
+@inject IPostService PostService
+@inject IFilterService FilterService
+@implements IDisposable
+
+<PageTitle>Home</PageTitle>
+
+<PostFilterMessage Filter="_filter"/>
+
+@if (_cardsModel is not null)
+{
+    @foreach (var post in _cardsModel.Posts)
+    {
+        <PostCard CardModel="post"/>
+    }
+
+    if (!_cardsModel.Posts.Any())
+    {
+        <div class="no-posts">
+            No results found
+        </div>
+    }
+
+    else if (_cardsModel.Page < _cardsModel.TotalPages)
+    {
+        <div class="text-center">
+            <button class="load-more">Load More</button>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <span class="load-more no-more">That is All</span>
+        </div>
+    }
+}
+
+@code{
+
+    private PostsModel? _cardsModel;
+    private PostFilter? _filter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _filter = FilterService.Filter;
+        FilterService.FilterChanged += FilterServiceOnFilterChanged;
+        await LoadPosts();
+    }
+
+    private void FilterServiceOnFilterChanged(PostFilter filter)
+    {
+        _filter = filter;
+        Task.Run(LoadPosts);
+    }
+
+    private async Task LoadPosts()
+    {
+        _cardsModel = await PostService.GetPostsAsync(_filter);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        FilterService.FilterChanged -= FilterServiceOnFilterChanged;
+    }
+
+}

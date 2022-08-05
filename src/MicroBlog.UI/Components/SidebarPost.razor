@@ -1,0 +1,28 @@
+﻿@using MicroBlog.UI.Models
+
+@if (Post is not null)
+{
+    <div class="item mb-2">
+        <div class="item-link">
+            <NavLink href="/post">
+                <img class="item-image" src="@Post.ImageUri" alt="post">
+            </NavLink>
+        </div>
+        <div class="item-info">
+            <h2>
+                <NavLink href="/post">@Post.Title</NavLink>
+            </h2>
+            <div class="item-meta">
+                <span class="oi oi-clock"></span>
+                @Post.Date.ToString()
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public BasePostModel? Post { get; set; }
+
+}
