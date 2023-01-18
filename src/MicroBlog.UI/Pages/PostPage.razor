@@ -1,9 +1,51 @@
-﻿@page "/post"
+﻿@page "/post/{slug}"
+@using MicroBlog.UI.Core.UiModels;
+@inject IPostService PostService
+@inject INavigationService NavigationService
 
-<PageTitle>Post</PageTitle>
-
-<Post/>
+<PageTitle>@_postModel?.Title</PageTitle>
+<Loader IsLoading="_isLoading" />
+<Post PostModel="_postModel" />
+<PostNavigation/>
+<PostRecommendation/>
+<PostComments/>
 
 @code {
 
+    private bool _isLoading;
+    private PostModel? _postModel;
+
+    [Parameter]
+    public string? Slug { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationService.Navigated += OnNavigated;
+        await LoadPost(Slug);
+    }
+
+    private async Task LoadPost(string? slug)
+    {
+        if (!string.IsNullOrWhiteSpace(slug))
+        {
+            _isLoading = true;
+            StateHasChanged();
+
+            try
+            {
+                var post = await PostService.GetPostAsync(slug);
+                _postModel = PostModel.FromPostDto(post);
+            }
+            finally
+            {
+                _isLoading = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void OnNavigated(string slug)
+    {
+        _ = LoadPost(slug);
+    }
 }

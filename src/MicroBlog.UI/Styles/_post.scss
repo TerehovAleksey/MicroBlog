@@ -1,0 +1,274 @@
+﻿@import '_colors.scss';
+
+.query-message {
+    overflow: hidden;
+    background-color: $app-color-bg-light;
+    color: $app-color-text-dark;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 10px;
+    margin: 0 0 25px;
+    border: 1px solid $app-color-border;
+    border-radius: 3px;
+
+    .query-info {
+        margin: 0 5px;
+
+        .search-label {
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    }
+
+    .show-more {
+        float: right;
+        color: $app-color-accent;
+        text-decoration: underline;
+        transition: opacity .17s;
+        border: none;
+        background: transparent;
+
+        &:hover {
+            opacity: .8;
+        }
+    }
+}
+
+/*Post Card*/
+.card {
+    .card-body {
+        .card-title {
+            overflow: hidden;
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 1.3em;
+            text-decoration: none;
+            margin: 0;
+        }
+
+        .card-title-small {
+            display: block;
+            height: 40px;
+            font-size: 15px;
+            color: $app-color-text-dark;
+            font-weight: 700;
+            line-height: 40px;
+            text-transform: capitalize;
+            text-align: left;
+            padding: 0 10px;
+            margin: 0;
+        }
+
+        .card-subtitle {
+            margin: 13px 0 0;
+            padding: 0;
+            overflow: hidden;
+            color: $app-color-text-light;
+            font-size: 13px;
+            font-weight: 400;
+
+            .post-tag,
+            .post-author,
+            .post-date {
+                color: $app-color-text-light;
+                transition: color .17s;
+                border: none;
+                background: transparent;
+
+                &:hover {
+                    color: $app-color-accent;
+                }
+            }
+        }
+
+        .post-info {
+            margin: 20px 0 0;
+
+            .post-image {
+                float: left;
+                width: 210px;
+                height: 140px;
+                overflow: hidden;
+                margin: 0 20px 0 0;
+                border-radius: 4px;
+
+                @media(max-width: 560px) {
+                    float: left;
+                    width: 100%;
+                    height: 185px;
+                    overflow: hidden;
+                    margin: 0 0 10px 0;
+                }
+
+                .post-image-link {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    display: block;
+                    z-index: 1;
+                    border-radius: 4px;
+                    overflow: hidden;
+
+                    .post-thumb {
+                        display: block;
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: top;
+                        z-index: 1;
+                        transition: opacity .17s ease, transform .35s ease;
+                    }
+
+                    &:hover .post-thumb {
+                        transform: scale(1.05);
+                        opacity: .9;
+                    }
+                }
+            }
+
+            .post-index {
+                font-size: 15px;
+                line-height: 1.6em;
+                color: $app-color-text-dark;
+                margin: 0;
+            }
+        }
+    }
+}
+
+/*Post*/
+.post {
+    width: 100%;
+    background-color: $app-color-bg-light;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin: 0 0 35px;
+    border: 1px solid $app-color-border;
+    border-radius: 3px;
+
+    .breadcrumb {
+        font-size: 12px;
+        font-weight: 400;
+        height: 34px;
+        background-color: #fdfdff;
+        color: #aaa;
+        line-height: 34px;
+        padding: 0 15px;
+        margin: 0 0 15px;
+        border-bottom: 2px solid #f2f2f6;
+
+        a {
+            color: #aaa;
+            transition: color .17s;
+
+            &:hover {
+                color: #598cff;
+            }
+        }
+    }
+
+    .post-title {
+        color: $app-color-text-dark;
+        font-size: 30px;
+        line-height: 1.4em;
+        font-weight: 400;
+        position: relative;
+        display: block;
+        padding: 0 15px;
+        margin: 0 0 15px;
+    }
+
+    .post-meta {
+        overflow: hidden;
+        color: $app-color-text-light;
+        font-size: 13px;
+        font-weight: 400;
+        padding: 0 15px;
+        margin-bottom: 15px;
+
+        .post-author,
+        .post-date {
+            float: left;
+            display: inline-block;
+            margin: 0 10px 0 0;
+            color: $app-color-text-light;
+            transition: color .17s;
+        }
+
+        .post-author:hover,
+        .post-date:hover {
+            color: $app-color-accent;
+        }
+    }
+
+    .post-body {
+        width: 100%;
+        font-size: 15px;
+        line-height: 1.6em;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 20px 15px 0;
+        margin: 15px 0 20px;
+        border-top: 1px solid $app-color-border-post;
+        word-wrap: break-word;
+        font-weight: 400;
+        color: $app-color-text-post;
+
+        .socials-list {
+            margin: -10px 0 0 0;
+
+            li {
+                padding: 0 2.5px;
+                width: calc(100% / 7);
+
+                a {
+                    width: 100%;
+                    height: 32px;
+                    line-height: 32px;
+                    font-weight: 400;
+                    font-size: 17px;
+                }
+            }
+        }
+    }
+}
+
+/*Post Navigation*/
+.post-navigation {
+    .post-nav {
+        position: relative;
+        overflow: hidden;
+        display: block;
+        padding: 0 5px;
+        margin: 0 0 35px;
+
+        .post-next {
+            float: right;
+            text-align: right;
+            box-sizing: border-box;
+            padding: 0 0 0 10px;
+        }
+
+        .post-prev {
+            float: left;
+            text-align: left;
+            box-sizing: border-box;
+            padding: 0 10px 0 0;
+        }
+
+        a {
+            line-height: 1.4em;
+            display: block;
+            overflow: hidden;
+            transition: color .17s;
+
+            .post-link-title {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 1.5em;
+                margin: 0;
+            }
+        }
+    }
+}

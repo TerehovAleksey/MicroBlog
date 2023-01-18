@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>MicroBlog.UI</title>
+    <title>MicroBlog</title>
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/app.css" rel="stylesheet" />
-    <link href="MicroBlog.UI.styles.css" rel="stylesheet" />
+    <link href="css/app.min.css" rel="stylesheet" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div style="min-height: 100vh; background-color: #f2f6f8">
+            <div class="loader" style="position: absolute;">
+                <div class="loader-content"></div>
+            </div>
+        </div>
+    </div>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

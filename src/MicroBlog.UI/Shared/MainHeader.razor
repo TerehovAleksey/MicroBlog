@@ -1,5 +1,4 @@
-﻿@using MicroBlog.UI.Services
-@inject IFilterService FilterService
+﻿@inject IFilterService FilterService
 
 <header class="header">
     <nav class="navbar navbar-light navbar-expand-lg bg-light">
@@ -15,19 +14,10 @@
                     <div class="header-menu">
                         <ul class="nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/">Home</a>
+                                <NavLink class="nav-link" href="/">@Strings.Home</NavLink>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Features</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Mega Menu</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Documentation</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Download This Template</a>
+                             <li class="nav-item">
+                                <NavLink class="nav-link" href="/login">Войти</NavLink>
                             </li>
                         </ul>
                     </div>
@@ -37,7 +27,7 @@
             else
             {
                 <EditForm Model="_searchModel" OnValidSubmit="SearchSubmit">
-                    <InputText id="search" @bind-Value="_searchModel.Query" placeholder="Search this blog"/>
+                    <InputText id="search" @bind-Value="_searchModel.Query" placeholder="@Strings.SearchThisBlog"/>
                     <input style="display: none;" type="submit"/>
                 </EditForm>
                 <span class="oi oi-x" style="cursor: pointer;" @onclick="() => _isSearchMode = false"></span>

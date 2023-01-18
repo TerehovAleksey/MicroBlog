@@ -1,0 +1,140 @@
+﻿@import url("open-iconic/font/css/open-iconic-bootstrap.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&display=swap");
+html, body {
+  font-family: "Fira Sans", sans-serif;
+}
+
+.loader {
+  z-index: 10;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader .loader-content {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+.loader .loader-content:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #598cff transparent #598cff transparent;
+  animation: loader-content 1.2s linear infinite;
+}
+
+@keyframes loader-content {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+#app {
+  position: relative;
+}
+
+h1:focus {
+  outline: none;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a {
+  color: #000000;
+  transition: color 0.17s;
+}
+
+.item-info a:hover {
+  color: #598cff;
+}
+
+a:hover {
+  color: #598cff;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+main {
+  background: #f2f6f8;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+main .container {
+  padding: 40px 0 30px;
+}
+
+.header {
+  height: 70px;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(155, 155, 155, 0.15);
+}
+
+.header-menu .nav-link {
+  color: #111111;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+  padding: 0 15px;
+  transition: color 0.17s ease;
+}
+
+.post-image-link:hover .post-thumb, .post-image-wrap:hover .post-image-link .post-thumb, .hot-item-inner:hover .post-image-link .post-thumb {
+  transform: scale(1.05);
+}
+
+.post-image-link:hover .post-thumb, .post-image-wrap:hover .post-image-link .post-thumb {
+  opacity: 0.9;
+}
+
+.header .navbar form {
+  width: 100%;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0);
+  line-height: 70px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.header .navbar input {
+  width: 100%;
+  height: 50px;
+  font-family: inherit;
+  color: #111111;
+  margin: 0;
+  padding: 0 58px 0 10px;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 13px;
+  font-weight: 400;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.header .navbar input:focus {
+  color: #111111;
+  outline: none;
+}

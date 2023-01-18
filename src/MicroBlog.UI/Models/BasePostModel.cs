@@ -3,6 +3,7 @@
 public class BasePostModel
 {
     public string Title { get; init; } = default!;
-    public string ImageUri { get; init; } = default!;
-    public DateOnly Date { get; init; }
+    public string Cover { get; init; } = default!;
+    public DateTime Date { get; init; }
+    public string Slug { get; set; } = default!;
 }

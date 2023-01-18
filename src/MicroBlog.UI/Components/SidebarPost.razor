@@ -1,20 +1,20 @@
-﻿@using MicroBlog.UI.Models
+﻿@inject INavigationService NavigationService
 
 @if (Post is not null)
 {
-    <div class="item mb-2">
-        <div class="item-link">
-            <NavLink href="/post">
-                <img class="item-image" src="@Post.ImageUri" alt="post">
-            </NavLink>
+    <div class="card-sm mb-2">
+        <div class="card-sm-link">
+            <a @onclick="@(() => NavigationService.Navigate(Post.Slug))">
+                <img class="card-sm-image" src="@Post.Cover" alt="post">
+            </a>
         </div>
-        <div class="item-info">
+        <div class="card-sm-info">
             <h2>
-                <NavLink href="/post">@Post.Title</NavLink>
+                <a @onclick="@(() => NavigationService.Navigate(Post.Slug))">@Post.Title</a>
             </h2>
-            <div class="item-meta">
+            <div class="card-sm-meta">
                 <span class="oi oi-clock"></span>
-                @Post.Date.ToString()
+                @Post.Date.ToShortDateString()
             </div>
         </div>
     </div>

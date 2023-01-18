@@ -1,0 +1,23 @@
+﻿@import url('../wwwroot/css/open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&display=swap');
+
+html, body {
+    font-family: 'Fira Sans', sans-serif;
+    height: 100%;
+}
+
+.post-image-link:hover .post-thumb, .post-image-wrap:hover .post-image-link .post-thumb, .hot-item-inner:hover .post-image-link .post-thumb {
+    transform: scale(1.05);
+}
+
+.post-image-link:hover .post-thumb, .post-image-wrap:hover .post-image-link .post-thumb {
+    opacity: .9;
+}
+
+@import '_colors.scss';
+@import '_loader.scss';
+@import '_main.scss';
+@import '_header.scss';
+@import '_footer.scss';
+@import '_post.scss';
+@import '_sidebar.scss';

@@ -1,0 +1,215 @@
+﻿@import '_colors.scss';
+
+.sidebar {
+
+    @media(min-width: 992px) {
+        min-width: 320px;
+        width: 320px;
+        margin-left: 1.5rem !important;
+    }
+
+    @media(max-width: 992px) {
+        margin-top: 1.5rem !important;
+    }
+
+    .card-body {
+        .card-title {
+            display: block;
+            height: 40px;
+            font-size: 15px;
+            color: $app-color-text-dark;
+            font-weight: 700;
+            line-height: 40px;
+            text-transform: capitalize;
+            text-align: left;
+            padding: 0 10px;
+            margin: 0;
+        }
+
+        .card-content {
+            float: left;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin: 0;
+        }
+    }
+}
+
+/*Socials*/
+.socials-list {
+    margin: 0 -5px;
+
+    li {
+        float: left;
+        width: 20%;
+        box-sizing: border-box;
+        padding: 0 5px;
+        margin: 10px 0 0;
+
+        a {
+            display: block;
+            height: 40px;
+            font-size: 22px;
+            color: $app-color-bg-light;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 2px;
+            transition: all .17s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        &.facebook a {
+            background-color: #3b5999;
+        }
+
+        &.twitter a {
+            background-color: #00acee;
+        }
+
+        &.linkedin a {
+            background-color: #0077b5;
+        }
+
+        &.reddit a {
+            background-color: #ff4500;
+        }
+
+        &.pinterest a {
+            background-color: #ca2127;
+        }
+
+        &.vk a {
+            background-color: #4a76a8;
+        }
+
+        &.instagram a {
+            background: linear-gradient(15deg, #ffb13d, #dd277b, #4d5ed4);
+        }
+
+        &.youtube a {
+            background-color: #db4a39;
+        }
+
+        &.whatsapp a {
+            background-color: #3fbb50;
+        }
+
+        &.skype a {
+            background-color: #00aff0;
+        }
+
+        &.mail a {
+            background-color: #888888;
+        }
+    }
+}
+
+/*Most Popular*/
+.card-sm {
+    overflow: hidden;
+
+    .card-sm-link {
+        width: 75px;
+        height: 60px;
+        float: left;
+        overflow: hidden;
+        display: block;
+        vertical-align: middle;
+        margin: 0 12px 0 0;
+        border-radius: 3px;
+
+        .card-sm-image {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            z-index: 1;
+            transition: opacity .17s ease, transform .35s ease;
+        }
+    }
+
+    .card-sm-link:hover .card-sm-image {
+        transform: scale(1.05);
+        opacity: .9;
+    }
+
+    .card-sm-info {
+        h2 {
+            overflow: hidden;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.5em;
+            margin: 0;
+        }
+
+        a {
+            color: $app-color-text-dark;
+            transition: color .17s;
+        }
+
+        a:hover {
+            color: $app-color-accent;
+        }
+
+        .card-sm-meta {
+            overflow: hidden;
+            color: $app-color-text-light;
+            font-size: 13px;
+            font-weight: 400;
+            padding: 0 1px;
+        }
+    }
+}
+
+/*Tags*/
+.tags-list {
+    padding: 0;
+    font-weight: 400;
+
+    li {
+        position: relative;
+        float: left;
+        margin: 0 5px 5px 0;
+
+        button {
+            display: block;
+            height: 26px;
+            background-color: #fdfdff;
+            color: $app-color-text;
+            font-size: 12px;
+            line-height: 26px;
+            font-weight: 400;
+            padding: 0 10px;
+            border: 1px solid #f2f2f6;
+            border-radius: 3px;
+            transition: all .17s ease;
+        }
+
+        button:hover {
+            color: $app-color-bg-light;
+            background-color: $app-color-accent;
+            border-color: $app-color-accent;
+        }
+    }
+}
+
+/*Last On Youtube*/
+.last-youtube {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -1,11 +1,10 @@
-﻿@using MicroBlog.UI.Models
-@using MicroBlog.UI.Services
-@inject IFilterService FilterService
+﻿@inject IFilterService FilterService
+@inject NavigationManager Navigation
 
 <div class="card border-light mb-4">
     <div class="card-body">
         <h5 class="card-title">
-            <NavLink href="/post">@CardModel.Title</NavLink>
+            <NavLink href="@("/post/" + CardModel.Slug)">@CardModel.Title</NavLink>
         </h5>
         <h6 class="card-subtitle mb-2">
             <button class="post-tag" @onclick="() => FilterService.SearchByTag(CardModel.Tag)">
@@ -16,20 +15,20 @@
                 <span class="oi oi-person ms-2"></span>
                 @CardModel.Author
             </button>
-            <button class="post-date" @onclick="() => FilterService.SearchByDate(CardModel.Date.ToString())">
+            <button class="post-date" @onclick="() => FilterService.SearchByDate(CardModel.Date)">
                 <span class="oi oi-clock ms-2"></span>
-                @CardModel.Date.ToString()
+                @CardModel.Date.ToShortDateString()
             </button>
         </h6>
         <div class="post-info">
             <div class="post-image">
                 <a class="post-image-link" href="#">
-                    <img class="post-thumb" src="@CardModel.ImageUri" alt="card">
+                    <img class="post-thumb" src="@CardModel.Cover" alt="card" @onclick="@(()=>Navigation.NavigateTo($"/post/{CardModel.Slug}"))">
                 </a>
             </div>
             <div class="post-index ms-2">
                 <p>
-                    @CardModel.Text
+                    @CardModel.Content
                 </p>
             </div>
         </div>

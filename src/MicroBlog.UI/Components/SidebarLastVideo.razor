@@ -1,9 +1,8 @@
-﻿@using MicroBlog.UI.Services
-@inject IYoutubeService YoutubeService
+﻿@inject IYoutubeService YoutubeService
 
 @if (!string.IsNullOrEmpty(_src))
 {
-    <SidebarCard Title="Last on YouTube">
+    <SidebarCard Title="@Strings.LastOnYouTube">
         <SidebarIframe Src="@_src"/>
     </SidebarCard>
 }

@@ -1,13 +1,11 @@
-﻿@using MicroBlog.UI.Services
-@using MicroBlog.UI.Models
-@inject IPostService PostService
+﻿@inject IPostService PostService
 
 @if (_posts is not null)
 {
-    <SidebarCard Title="Most Popular">
+    <SidebarCard Title="@Strings.MostPopular">
         @foreach (var post in _posts)
         {
-            <SidebarPost Post="post"/>
+            <SidebarPost Post="post" />
         }
     </SidebarCard>
 }
@@ -18,7 +16,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _posts = await PostService.GetMostPopularPostsAsync();
+        var posts = await PostService.GetMostPopularPostsAsync();
+        _posts = posts?.Select(p => new BasePostModel
+            {
+                Date = p.DatePublished,
+                Title = p.Title,
+                Cover = p.Cover,
+                Slug = p.Slug
+            });
     }
 
 }

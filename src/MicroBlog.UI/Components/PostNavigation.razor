@@ -1,0 +1,35 @@
+﻿@using MicroBlog.UI.Core.UiModels;
+
+<div class="post-navigation">
+    <ul class="post-nav">
+        <li class="post-prev">
+            <a class="post-prev-link" href="#" rel="prev">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </span>
+                <span class="post-link-title">Guide to WordPress Post Revisions</span>
+            </a>
+        </li>
+        <li class="post-next">
+            <a class="post-next-link" href="#" rel="next">
+                <span class="post-link-title">Is the Designer Facing Extinction?</span>
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public PostNavigationModel? PreviousPost { get; set; }
+
+    [Parameter]
+    public PostNavigationModel? NextPost { get; set; }
+}

@@ -1,16 +1,15 @@
-﻿@using MicroBlog.UI.Services
-@inject IPostService PostService
+﻿@inject IPostService PostService
 @inject IFilterService FilterService
 
 @if (_tags is not null)
 {
-    <SidebarCard Title="Tags">
-        <ul>
+    <SidebarCard Title="@Strings.Tags">
+        <ul class="tags-list">
             @foreach (var tag in _tags)
             {
                 <li>
-                    <button @onclick="() => FilterService.SearchByTag(tag)">
-                        @tag
+                    <button @onclick="() => FilterService.SearchByTag(tag.Name)">
+                        @tag.Name
                     </button>
                 </li>
             }
@@ -20,7 +19,7 @@
 
 @code {
 
-    private IEnumerable<string>? _tags;
+    private IEnumerable<TagDto>? _tags;
 
     protected override async Task OnInitializedAsync()
     {

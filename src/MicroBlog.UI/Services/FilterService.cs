@@ -1,7 +1,4 @@
-﻿using MicroBlog.UI.Models;
-using Microsoft.AspNetCore.Components;
-
-namespace MicroBlog.UI.Services;
+﻿namespace MicroBlog.UI.Services;
 
 public class FilterService : IFilterService
 {
@@ -32,7 +29,7 @@ public class FilterService : IFilterService
         FilterChanged?.Invoke(Filter);
     }
 
-    public void SearchByDate(string date)
+    public void SearchByDate(DateTime date)
     {
         ClearFilter();
         Filter.Date = date;

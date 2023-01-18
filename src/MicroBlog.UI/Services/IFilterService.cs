@@ -1,6 +1,4 @@
-﻿using MicroBlog.UI.Models;
-
-namespace MicroBlog.UI.Services;
+﻿namespace MicroBlog.UI.Services;
 
 public interface IFilterService
 {
@@ -9,6 +7,6 @@ public interface IFilterService
     public void Reset();
     public void SearchByTag(string tag);
     public void SearchByAuthor(string author);
-    public void SearchByDate(string date);
+    public void SearchByDate(DateTime date);
     public void SearchByQuery(string query);
 }

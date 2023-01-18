@@ -2,7 +2,7 @@
 
 public record PostsModel
 {
-    public List<PostCardModel> Posts { get; init; } = new();
+    public IEnumerable<PostCardModel> Posts { get; init; } = default!;
     public int Page { get; init; }
     public int TotalPages { get; init; }
 }

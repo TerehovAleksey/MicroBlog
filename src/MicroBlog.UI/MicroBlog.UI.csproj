@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.1" PrivateAssets="all" />
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.30.4" />
+    <PackageReference Include="Markdown.ColorCode" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +57,14 @@
     <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Thin.ttf" />
     <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ThinItalic.ttf" />
     <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\OFL.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroBlog.UI.Core\MicroBlog.UI.Core.csproj" />
   </ItemGroup>
 
 </Project>

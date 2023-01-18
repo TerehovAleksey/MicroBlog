@@ -1,0 +1,46 @@
+﻿@import '_colors.scss';
+
+footer {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background-color: $app-color-bg-dark;
+    padding: 15px 0;
+
+    .footer-copyright {
+        font-size: 13px;
+        display: block;
+        height: 34px;
+        color: $app-color-bg-light;
+        font-weight: 500;
+        line-height: 34px;
+
+        a {
+            color: $app-color-green;
+        }
+    }
+
+    .oi-heart {
+        color: $app-color-red;
+        margin: 0 2px;
+    }
+
+    .footer-menu-item {
+        display: inline-block;
+        height: 34px;
+        padding: 0;
+        margin: 0;
+
+        a {
+            font-size: 11px;
+            font-weight: 500;
+            display: block;
+            color: $app-color-bg-light;
+            text-transform: uppercase;
+            line-height: 34px;
+            padding: 0 10px;
+            margin: 0 0 0 5px;
+            transition: color .17s ease;
+        }
+    }
+}
