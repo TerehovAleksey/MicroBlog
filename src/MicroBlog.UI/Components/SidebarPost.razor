@@ -14,7 +14,7 @@
             </h2>
             <div class="card-sm-meta">
                 <span class="oi oi-clock"></span>
-                @Post.Date.ToShortDateString()
+                @Post.DatePublished.ToShortDateString()
             </div>
         </div>
     </div>
@@ -23,6 +23,6 @@
 @code {
 
     [Parameter, EditorRequired]
-    public BasePostModel? Post { get; set; }
+    public PostListItemDto? Post { get; set; }
 
 }

@@ -1,4 +1,5 @@
-﻿@import url("open-iconic/font/css/open-iconic-bootstrap.min.css");
+﻿@charset "UTF-8";
+@import url("open-iconic/font/css/open-iconic-bootstrap.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&display=swap");
 html, body {
   font-family: "Fira Sans", sans-serif;
@@ -324,7 +325,7 @@ footer .footer-menu-item a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   z-index: 1;
   transition: opacity 0.17s ease, transform 0.35s ease;
 }
@@ -445,17 +446,86 @@ footer .footer-menu-item a {
   box-sizing: border-box;
   padding: 0 10px 0 0;
 }
-.post-navigation .post-nav a {
+.post-navigation .post-nav button {
   line-height: 1.4em;
   display: block;
   overflow: hidden;
   transition: color 0.17s;
+  border: none;
+  background-color: transparent;
 }
-.post-navigation .post-nav a .post-link-title {
+.post-navigation .post-nav button:hover {
+  color: #598cff;
+}
+.post-navigation .post-nav button .post-link-title {
   font-size: 12px;
   font-weight: 400;
   line-height: 1.5em;
   margin: 0;
+}
+
+/*Related Posts*/
+.related-ready {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+}
+.related-ready ul.related-posts {
+  position: relative;
+  overflow: hidden;
+  margin: 0 -10px;
+  padding: 0;
+}
+.related-ready ul.related-posts .related-item {
+  width: 33.33333333%;
+  position: relative;
+  overflow: hidden;
+  float: left;
+  display: block;
+  box-sizing: border-box;
+  padding: 0 10px;
+  margin: 0;
+}
+.related-ready ul.related-posts .related-item .post-image-link {
+  width: 100%;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin: 0 0 10px;
+  border-radius: 3px;
+}
+.related-ready ul.related-posts .related-item .post-image-link .post-thumb {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  transition: opacity 0.17s ease, transform 0.35s ease;
+}
+.related-ready ul.related-posts .post-title {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5em;
+  display: block;
+  margin: 0;
+}
+.related-ready ul.related-posts .post-title a {
+  color: #000000;
+  transition: color 0.17s;
+}
+.related-ready ul.related-posts .post-title a:hover {
+  color: #598cff;
+}
+.related-ready ul.related-posts .post-meta {
+  overflow: hidden;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 0 1px;
 }
 
 @media (min-width: 992px) {
@@ -568,7 +638,7 @@ footer .footer-menu-item a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   z-index: 1;
   transition: opacity 0.17s ease, transform 0.35s ease;
 }
@@ -633,10 +703,120 @@ footer .footer-menu-item a {
   padding-bottom: 56.25%;
   padding-top: 25px;
 }
+.last-youtube:not(:first-child) {
+  margin-top: 10px;
+}
 .last-youtube iframe {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.admin-layout main {
+  font-family: Open Sans, Helvetica Neue, Helvetica, Arial, Nanum Barun Gothic, 맑은고딕, Malgun Gothic, sans-serif;
+}
+.admin-layout main .tavenem-markdownEditor {
+  height: 50rem;
+}
+.admin-layout main label {
+  color: #555;
+  display: block;
+  font-weight: 600;
+  margin: 10px 0 5px;
+  font-size: 12px;
+}
+.admin-layout main input[type=text] {
+  border: 1px solid #e1e3e9;
+  border-radius: 2px;
+  color: #333;
+  height: 30px;
+  padding: 0 12px;
+  width: 100%;
+}
+.admin-layout main input[type=text]:focus {
+  border-color: transparent;
+  outline: 1px solid #00a9ff;
+}
+.admin-layout main .ok-button {
+  background-color: #00a9ff;
+  color: #fff;
+  height: 32px;
+  min-width: 63px;
+  outline-color: #009bf2;
+  border: none;
+  border-radius: 2px;
+  font-size: 13px;
+}
+.admin-layout main .post-editor {
+  margin-top: 20px;
+}
+.admin-layout main .form-group .autocomplete {
+  z-index: 1060;
+  position: absolute;
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow: hidden;
+  overflow-y: auto;
+  border-radius: 0.3rem;
+}
+
+.admin-layout .text-gold {
+  color: #ff9f2e !important;
+}
+.admin-layout .link-gold {
+  color: #ff9f2e;
+}
+.admin-layout .list-item {
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+  transition: background-color ease-in-out 0.15s;
+}
+.admin-layout .list-item:hover {
+  background-color: #eee;
+}
+.admin-layout .list-item .list-check {
+  padding: 0;
+  margin: 0;
+  height: 3rem;
+  width: 3.5rem;
+  padding-left: 0;
+  position: relative;
+  font-weight: 500;
+  margin-left: -1rem;
+}
+.admin-layout .list-item .list-check input[type=checkbox] {
+  vertical-align: top;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  transition: opacity ease-in-out 0.1s;
+}
+.admin-layout .list-item .list-title {
+  display: block;
+  flex-grow: 1;
+  margin-right: 0.5rem;
+  line-height: 3rem;
+  font-weight: 400;
+  font-size: 0.9375rem;
+  color: #1c1c1c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.admin-layout .list-item .list-btn {
+  background: none;
+  padding: 0 0.5rem;
+  border: 0;
+  margin: 0 0.5rem;
+  text-align: center;
+  height: 3rem;
+  color: #707a86;
 }

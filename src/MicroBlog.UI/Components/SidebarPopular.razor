@@ -1,29 +1,29 @@
 ﻿@inject IPostService PostService
 
-@if (_posts is not null)
+@if (_posts is not null && _posts.Any())
 {
     <SidebarCard Title="@Strings.MostPopular">
         @foreach (var post in _posts)
         {
-            <SidebarPost Post="post" />
+            <SidebarPost Post="post"/>
         }
     </SidebarCard>
 }
 
 @code {
 
-    private IEnumerable<BasePostModel>? _posts;
+    private IEnumerable<PostListItemDto>? _posts;
 
     protected override async Task OnInitializedAsync()
     {
-        var posts = await PostService.GetMostPopularPostsAsync();
-        _posts = posts?.Select(p => new BasePostModel
-            {
-                Date = p.DatePublished,
-                Title = p.Title,
-                Cover = p.Cover,
-                Slug = p.Slug
-            });
+        try
+        {
+            _posts = await PostService.GetMostPopularPostsAsync();
+        }
+        catch (Exception _)
+        {
+            //ignore
+        }
     }
 
 }

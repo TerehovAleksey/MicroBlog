@@ -4,31 +4,31 @@
 <div class="card border-light mb-4">
     <div class="card-body">
         <h5 class="card-title">
-            <NavLink href="@("/post/" + CardModel.Slug)">@CardModel.Title</NavLink>
+            <NavLink href="@("/post/" + Post.Slug)">@Post.Title</NavLink>
         </h5>
         <h6 class="card-subtitle mb-2">
-            <button class="post-tag" @onclick="() => FilterService.SearchByTag(CardModel.Tag)">
+            <button class="post-tag" @onclick="() => FilterService.SearchByTag(Post.MainTag)">
                 <span class="oi oi-tag"></span>
-                @CardModel.Tag
+                @Post.MainTag
             </button>
-            <button class="post-author" @onclick="() => FilterService.SearchByAuthor(CardModel.Author)">
+            <button class="post-author" @onclick="() => FilterService.SearchByAuthor(Post.Author)">
                 <span class="oi oi-person ms-2"></span>
-                @CardModel.Author
+                @Post.Author
             </button>
-            <button class="post-date" @onclick="() => FilterService.SearchByDate(CardModel.Date)">
+            <button class="post-date" @onclick="() => FilterService.SearchByDate(Post.DatePublished)">
                 <span class="oi oi-clock ms-2"></span>
-                @CardModel.Date.ToShortDateString()
+                @Post.DatePublished.ToShortDateString()
             </button>
         </h6>
         <div class="post-info">
             <div class="post-image">
-                <a class="post-image-link" href="#">
-                    <img class="post-thumb" src="@CardModel.Cover" alt="card" @onclick="@(()=>Navigation.NavigateTo($"/post/{CardModel.Slug}"))">
-                </a>
+                <NavLink class="post-image-link" href="@("/post/" + Post.Slug)">
+                    <img class="post-thumb" src="@Post.Cover" alt="card" @onclick="@(()=>Navigation.NavigateTo($"/post/{Post.Slug}"))">
+                </NavLink>
             </div>
             <div class="post-index ms-2">
                 <p>
-                    @CardModel.Content
+                    @Post.Description
                 </p>
             </div>
         </div>
@@ -38,6 +38,6 @@
 @code {
 
     [Parameter, EditorRequired]
-    public PostCardModel CardModel { get; set; } = new();
+    public PostListItemDto Post { get; set; } = default!;
 
 }

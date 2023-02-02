@@ -9,7 +9,6 @@
     <ItemGroup>
       <ProjectReference Include="..\MicroBlog.Common\MicroBlog.Common.csproj" />
       <ProjectReference Include="..\MicroBlog.Resources\MicroBlog.Resources.csproj" />
-      <ProjectReference Include="..\WebApi.Paging\WebApi.Paging.csproj" />
     </ItemGroup>
 
     <ItemGroup>

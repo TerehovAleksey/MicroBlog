@@ -5,7 +5,7 @@
         <div class="container">
             @if (!_isSearchMode)
             {
-                <div class="d-flex align-items-center">
+                <div class="d-flex flex-grow-1 align-items-center">
                     <div class="header-logo me-3">
                         <a href="/">
                             <img src="img/logo.png" alt="logo" data-height="50" data-width="187">
@@ -16,13 +16,26 @@
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="/">@Strings.Home</NavLink>
                             </li>
-                             <li class="nav-item">
-                                <NavLink class="nav-link" href="/login">Войти</NavLink>
-                            </li>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <li class="nav-item">
+                                        <NavLink class="nav-link" href="/admin/posts">Editor</NavLink>
+                                    </li>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <li class="nav-item">
+                                        <NavLink class="nav-link" href="/register">Регистрация</NavLink>
+                                    </li>
+                                    <li class="nav-item">
+                                        <NavLink class="nav-link" href="/login">Вход</NavLink>
+                                    </li>
+                                </NotAuthorized>
+                            </AuthorizeView>
                         </ul>
                     </div>
                 </div>
-                <span class="oi oi-magnifying-glass" style="cursor: pointer;" @onclick="() => _isSearchMode = true"></span>
+                <span class="oi oi-magnifying-glass me-4" style="cursor: pointer;" @onclick="() => _isSearchMode = true"></span>
+                <span class="oi oi-person" style="cursor: pointer;" @onclick="() => _isMenuOpen = !_isMenuOpen"></span>
             }
             else
             {
@@ -37,6 +50,7 @@
 </header>
 
 @code {
+    private bool _isMenuOpen;
     private bool _isSearchMode;
 
     private SearchModel _searchModel = new();
@@ -47,7 +61,7 @@
         _searchModel.Query = string.Empty;
         _isSearchMode = false;
     }
-    
+
     private class SearchModel
     {
         public string Query { get; set; } = string.Empty;

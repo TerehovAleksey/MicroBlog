@@ -129,14 +129,23 @@
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value>Почта не подтверждена.</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Главная</value>
+  </data>
+  <data name="InvalidAuthentication" xml:space="preserve">
+    <value>Неверный логин или пароль.</value>
   </data>
   <data name="LastOnYouTube" xml:space="preserve">
     <value>Последнее на YouTube</value>
   </data>
   <data name="LoadMore" xml:space="preserve">
     <value>Загрузить ещё</value>
+  </data>
+  <data name="LockoutEnabled" xml:space="preserve">
+    <value>Заблокирован</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Войти</value>
@@ -149,6 +158,9 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>
+  </data>
+  <data name="PasswordConfirmation" xml:space="preserve">
+    <value>Подтверждение пароля</value>
   </data>
   <data name="Recommendation" xml:space="preserve">
     <value>Рекомендации</value>

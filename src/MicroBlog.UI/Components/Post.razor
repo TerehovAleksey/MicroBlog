@@ -1,15 +1,18 @@
-﻿@using Markdig;
-@using Markdown.ColorCode;
-@using MicroBlog.UI.Core.UiModels;
-@inject IFilterService FilterService
+﻿@inject IFilterService FilterService
 
 @if (PostModel is not null)
 {
     <div class="post">
         <nav class="breadcrumb">
             <NavLink href="/">@Strings.Home</NavLink>
-            <span class="mx-2">></span>
-            <a href="#" @onclick="()=>FilterService.SearchByTag(PostModel.MainTag)">@PostModel.MainTag</a>
+            @{
+                var mainTag = PostModel.Tags.FirstOrDefault();
+                if (mainTag is not null)
+                {
+                    <span class="mx-2">></span>
+                    <a href="#" @onclick="()=>FilterService.SearchByTag(mainTag)">@mainTag</a>
+                }
+            }
             <span class="mx-2">></span>
             <span>@PostModel.Title</span>
         </nav>
@@ -30,31 +33,30 @@
                 <br>
             </div>
             <div>
-                @((MarkupString)content);
+                @((MarkupString)_content)
             </div>
         </div>
         <div class="post-body">
-            <PostTags Tags="PostModel?.Tags" />
+            <PostTags Tags="@PostModel.Tags" />
         </div>
         <div class="post-body">
-            <PostShare Slug="PostModel?.Slug" />
+            <PostShare Slug="@PostModel.Slug" />
         </div>
     </div>
 }
 
 
 @code {
+    
+    private string _content = string.Empty;
+    private MarkdownPipeline _pipeline;
 
     [Parameter, EditorRequired]
-    public PostModel? PostModel { get; set; }
-
-    private string content = string.Empty;
-
-    private MarkdownPipeline pipeline;
-
+    public PostDto? PostModel { get; set; }
+    
     public Post()
     {
-        pipeline = new MarkdownPipelineBuilder()
+        _pipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .UseColorCode()
         .Build();
@@ -62,9 +64,9 @@
 
     protected override void OnParametersSet()
     {
-        if (PostModel is not null)
+        if (PostModel is not null && !string.IsNullOrEmpty(PostModel.Content))
         {
-            content = Markdown.ToHtml(PostModel.Content, pipeline);
+            _content = Markdown.ToHtml(PostModel.Content, _pipeline);
         }
         base.OnParametersSet();
     }

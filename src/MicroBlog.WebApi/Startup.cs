@@ -14,7 +14,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         //AddIdentity должен стоять выше AddJwtBearer, иначе редирект при 401, 403
-        //services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ITokenService, TokenService>();
         services.AddDatabaseContext(_configuration);
         services.AddServices();
 
@@ -29,7 +29,7 @@ public class Startup
 
         //services.AddSwagger();
         //services.AddLocalization(options => options.ResourcesPath = "Resources");
-        //services.AddJwt(_configuration);
+        services.AddJwt(_configuration);
         services.AddMemoryCache();
 
         services.AddCors(options =>

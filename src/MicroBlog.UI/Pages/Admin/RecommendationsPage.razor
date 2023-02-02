@@ -1,0 +1,82 @@
+﻿@page "/admin/recommendations"
+@inject IYoutubeService YoutubeService;
+@layout AdminLayout
+
+<h3>Рекомендованое видео</h3>
+
+<EditForm EditContext="_editContext" OnSubmit="CreateRecommendation">
+    <DataAnnotationsValidator/>
+    <div class="row">
+        <div class="col">
+            <label for="video-id">ID видео</label>
+            <InputText type="text" id="video-id" @bind-Value="_model.VideoId"/>
+        </div>
+        <div class="col">
+            <label for="video-title">Название</label>
+            <InputText type="text" id="video-title" @bind-Value="_model.VideoName"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="video-id">Название канала</label>
+            <InputText type="text" id="video-id" @bind-Value="_model.ChannelName"/>
+        </div>
+        <div class="col">
+            <label for="video-title">Ссылка на канал</label>
+            <InputText type="text" id="video-title" @bind-Value="_model.ChannelLink"/>
+        </div>
+    </div>
+    <button class="ok-button my-2" type="submit">Добавить</button>
+    
+</EditForm>
+
+@if (_recommendations is not null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Канал</th>
+            <th>Ссылка на канал</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in _recommendations)
+        {
+            <tr>
+                <td>@item.VideoId</td>
+                <td>@item.VideoName</td>
+                <td>@item.ChannelName</td>
+                <td>@item.ChannelLink</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    private IEnumerable<YouTubeDetailedRecommendationDto>? _recommendations;
+    private EditContext? _editContext;
+    private YouTubeRecommendationDto? _model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _model = new();
+        _editContext = new EditContext(_model);
+        _recommendations = await YoutubeService.GetAllRecommendationsAsync();
+    }
+
+    private async Task CreateRecommendation()
+    {
+        if (_model is not null)
+        {
+            await YoutubeService.CreateRecommendationAsync(_model);
+            await OnInitializedAsync();
+            StateHasChanged();
+        }
+    }
+
+}

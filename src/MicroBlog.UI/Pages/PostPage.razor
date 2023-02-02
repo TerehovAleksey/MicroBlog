@@ -1,19 +1,21 @@
 ﻿@page "/post/{slug}"
-@using MicroBlog.UI.Core.UiModels;
 @inject IPostService PostService
 @inject INavigationService NavigationService
 
-<PageTitle>@_postModel?.Title</PageTitle>
+<PageTitle>@_post?.Title</PageTitle>
 <Loader IsLoading="_isLoading" />
-<Post PostModel="_postModel" />
-<PostNavigation/>
-<PostRecommendation/>
-<PostComments/>
+@if (_post is not null)
+{
+    <Post PostModel="_post" />
+    <PostNavigation PostId="_post.Id"/>
+    <PostRecommendation PostId="_post.Id"/>
+    <PostComments PostId="_post.Id"/>
+}
 
 @code {
 
     private bool _isLoading;
-    private PostModel? _postModel;
+    private PostDto? _post;
 
     [Parameter]
     public string? Slug { get; set; }
@@ -33,8 +35,7 @@
 
             try
             {
-                var post = await PostService.GetPostAsync(slug);
-                _postModel = PostModel.FromPostDto(post);
+                _post = await PostService.GetPostAsync(slug);
             }
             finally
             {

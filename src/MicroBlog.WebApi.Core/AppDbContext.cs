@@ -26,13 +26,9 @@ public sealed partial class AppDbContext : IdentityDbContext<User, Role, Guid>
         #region Configurations
 
          modelBuilder.ApplyConfiguration(new TagConfiguration());
-        // modelBuilder.ApplyConfiguration(new AccountTypeConfigurations());
-        // modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-        // modelBuilder.ApplyConfiguration(new CategoryTypeConfiguration());
-        // modelBuilder.ApplyConfiguration(new JournalConfiguration());
-        // modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
-        // modelBuilder.ApplyConfiguration(new UserCurrencyConfiguration());
-        
-        #endregion Configurations
+         modelBuilder.ApplyConfiguration(new PostConfiguration());
+         modelBuilder.ApplyConfiguration(new YoutubeRecommendationConfiguration());
+
+         #endregion Configurations
     }
 }

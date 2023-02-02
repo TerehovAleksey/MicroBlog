@@ -1,0 +1,121 @@
+﻿@typeparam TItem where TItem : notnull
+
+<div class="form-group position-relative @CssClass">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label for="@Id" class="form-label">@Label</label>
+    }
+    <div class="input-group has-icon-left">
+        <input type="text" class="form-control" placeholder="@Placeholder" id="@Id"
+               @bind-value="@_searchTerm" @bind-value:event="oninput" @onkeyup="@SearchChanged" @onfocusin="@(()=>SwitchSelector(true))" />
+    </div>
+    <div class="form-control-icon left-icon">
+        <i class="bi bi-search"></i>
+    </div>
+    @if (_isSelectorOpen && _filteredItems.Any())
+    {
+        <div class="autocomplete">
+            <ul class="list-group">
+                @foreach (var item in _filteredItems)
+                {
+                    <li class="list-group-item list-group-item-action" @onclick="@(() => HandleClick(item))">@DispaySelector(item)</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+@code {
+
+    private TItem _value = default!;
+    private IEnumerable<TItem> _filteredItems = new List<TItem>();
+    private bool _isSelectorOpen;
+    private string _searchTerm = "";
+
+    [Parameter]
+    public string CssClass { get; set; } = default!;
+
+    [Parameter]
+    public string Label { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    [Parameter]
+    public string Placeholder { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public TItem Value
+    {
+        get => _value;
+        set
+        {
+            if (value.Equals(_value))
+            {
+                return;
+            }
+
+            _value = value;
+
+            if (OnItemSelected.HasDelegate)
+            {
+                OnItemSelected.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter, EditorRequired]
+    public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+
+    [Parameter, EditorRequired]
+    public Func<TItem, string> DispaySelector { get; set; } = i => i.ToString() ?? string.Empty;
+
+    [Parameter]
+    public EventCallback<TItem> OnItemSelected { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnItemAdded { get; set; }
+
+    [Parameter]
+    public int Delay { get; set; } = 500;
+
+    private void SearchChanged(KeyboardEventArgs args)
+    {
+        FilterItems();
+        if (args.Key == "Enter" && !string.IsNullOrWhiteSpace(_searchTerm) && OnItemAdded.HasDelegate)
+        {
+            OnItemAdded.InvokeAsync(_searchTerm.Trim());
+            _searchTerm = string.Empty;
+            _isSelectorOpen = false;
+        }
+    }
+
+
+    private void SwitchSelector(bool isOpen)
+    {
+        if (isOpen)
+        {
+            FilterItems();
+            _isSelectorOpen = true;
+        }
+        else
+        {
+            _isSelectorOpen = false;
+        }
+    }
+
+    private void HandleClick(TItem item)
+    {
+        _isSelectorOpen = false;
+        _searchTerm = string.Empty;
+        Value = item;
+    }
+
+    private void FilterItems()
+    {
+        _filteredItems = Items.Where(item => DispaySelector(item).ToLower().Contains(_searchTerm.ToLower()));
+    }
+}

@@ -97,11 +97,29 @@ namespace MicroBlog.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email not confirmed..
+        /// </summary>
+        public static string EmailNotConfirmed {
+            get {
+                return ResourceManager.GetString("EmailNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {
             get {
                 return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Authentication..
+        /// </summary>
+        public static string InvalidAuthentication {
+            get {
+                return ResourceManager.GetString("InvalidAuthentication", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace MicroBlog.Resources {
         public static string LoadMore {
             get {
                 return ResourceManager.GetString("LoadMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lockout enabled.
+        /// </summary>
+        public static string LockoutEnabled {
+            get {
+                return ResourceManager.GetString("LockoutEnabled", resourceCulture);
             }
         }
         
@@ -156,6 +183,15 @@ namespace MicroBlog.Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password confirmation.
+        /// </summary>
+        public static string PasswordConfirmation {
+            get {
+                return ResourceManager.GetString("PasswordConfirmation", resourceCulture);
             }
         }
         

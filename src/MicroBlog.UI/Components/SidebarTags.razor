@@ -23,6 +23,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _tags = await PostService.GetAllTagsAsync();
+        try
+        {
+            _tags = await PostService.GetAllTagsAsync();
+        }
+        catch (Exception _)
+        {
+            //ignore
+        }
     }
 }

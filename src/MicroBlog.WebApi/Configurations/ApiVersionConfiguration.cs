@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Versioning;
-
-namespace MicroBlog.WebApi.Configurations;
+﻿namespace MicroBlog.WebApi.Configurations;
 
 internal static class ApiVersionConfiguration
 {

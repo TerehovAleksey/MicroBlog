@@ -7,21 +7,21 @@
 <PostFilterMessage Filter="_filter" />
 <Loader IsLoading="_isLoading" />
 
-@if (_cardsModel is not null && !_isLoading)
+@if (_posts is not null && !_isLoading)
 {
-    @foreach (var post in _cardsModel.Posts)
+    @foreach (var post in _posts)
     {
-        <PostCard CardModel="post" />
+        <PostCard Post="post" />
     }
 
-    if (!_cardsModel.Posts.Any())
+    if (!_posts.Any())
     {
         <div class="no-posts">
             @Strings.NoResultsFound
         </div>
     }
 
-    else if (_cardsModel.Page < _cardsModel.TotalPages)
+    else if (_metaData.CurrentPage < _metaData.TotalPages)
     {
         <div class="text-center">
             <button class="load-more">@Strings.LoadMore</button>
@@ -37,16 +37,16 @@
 
 @code {
 
-    private PostsModel? _cardsModel;
+    private MetaData _metaData = new();
+    private IEnumerable<PostListItemDto>? _posts;
     private PostFilter? _filter;
     private bool _isLoading;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         _filter = FilterService.Filter;
         FilterService.FilterChanged += FilterServiceOnFilterChanged;
-        Task.Run(async () => await LoadPosts(_filter));
-        return base.OnInitializedAsync();
+        await LoadPosts(_filter);
     }
 
     private void FilterServiceOnFilterChanged(PostFilter filter)
@@ -63,21 +63,11 @@
         try
         {
             var posts = await PostService.GetPostsAsync(filter);
-            _cardsModel = new PostsModel()
-                {
-                    Page = posts.MetaData.CurrentPage,
-                    TotalPages = posts.MetaData.TotalPages,
-                    Posts = posts.Select(p => new PostCardModel
-                    {
-                        Author = p.Author,
-                        Tag = p.MainTag,
-                        Content = p.Description,
-                        Date = p.DatePublished,
-                        Title = p.Title,
-                        Cover = p.Cover,
-                        Slug = p.Slug
-                    })
-                };
+            if (posts is not null)
+            {
+                _metaData = posts.MetaData;
+                _posts = posts;
+            }
         }
         catch (Exception)
         {

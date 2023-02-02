@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Common", "MicroBl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.UI.Core", "MicroBlog.UI.Core\MicroBlog.UI.Core.csproj", "{920B52D2-49F4-4858-AA6C-591F39D798F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Paging", "WebApi.Paging\WebApi.Paging.csproj", "{A9451FF0-FB49-441D-8AD2-0620090F4298}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroBlog.Resources", "MicroBlog.Resources\MicroBlog.Resources.csproj", "{872D4605-959B-4C47-B442-2A2D4D083996}"
 EndProject
 Global
@@ -55,10 +53,6 @@ Global
 		{920B52D2-49F4-4858-AA6C-591F39D798F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{920B52D2-49F4-4858-AA6C-591F39D798F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{920B52D2-49F4-4858-AA6C-591F39D798F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9451FF0-FB49-441D-8AD2-0620090F4298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9451FF0-FB49-441D-8AD2-0620090F4298}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9451FF0-FB49-441D-8AD2-0620090F4298}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9451FF0-FB49-441D-8AD2-0620090F4298}.Release|Any CPU.Build.0 = Release|Any CPU
 		{872D4605-959B-4C47-B442-2A2D4D083996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{872D4605-959B-4C47-B442-2A2D4D083996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{872D4605-959B-4C47-B442-2A2D4D083996}.Release|Any CPU.ActiveCfg = Release|Any CPU

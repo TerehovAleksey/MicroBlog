@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using System.IO;
-using System.Text;
-
-namespace MicroBlog.WebApi.Controllers
+﻿namespace MicroBlog.WebApi.Controllers
 {
     [ApiController]
     [Route("api/posts")]
@@ -10,164 +6,114 @@ namespace MicroBlog.WebApi.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
-        private readonly List<PostLinkDto> _posts;
 
         public PostsController(IPostService postService)
         {
             _postService = postService;
-            _posts = GeneratePosts();
         }
 
+        /// <summary>
+        /// Получение списка всех тегов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("tags")]
         [ProducesResponseType(typeof(IEnumerable<TagDto>), StatusCodes.Status200OK)]
-        public Task<IEnumerable<TagDto>> GetTagsAsync()
+        public Task<IEnumerable<TagDto>> GetTagsAsync() => _postService.GetAllTagsAsync();
+
+        /// <summary>
+        /// Получение списка постов по фильтру
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PostListItemDto>), StatusCodes.Status200OK)]
+        public async Task<IEnumerable<PostListItemDto>> GetPostsAsync([FromQuery] PostFilter filter)
         {
-            return _postService.GetAllTagsAsync();
+            var posts = await _postService.GetPostsByFilterAsync(filter);
+
+            var body = JsonSerializer.Serialize(posts.MetaData, new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+            Response.Headers.Add("X-Pagination", body);
+
+            return FixCoverPath(posts);
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<PostDto>), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<PostLinkDto>> GetPostsAsync([FromQuery] PostFilter filter)
+        /// <summary>
+        /// Получение поста по сегменту пути
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{slug}")]
+        [ProducesResponseType(typeof(PostDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetPostAsync([FromRoute] string slug)
+        {
+            var post = await _postService.GetPostBySlugAsync(slug);
+            if (post is null)
+            {
+                return NotFound();
+            }
+
+            post.Cover = GetCoverFullPath(post.Cover);
+
+            return Ok(post);
+        }
+
+        /// <summary>
+        /// Получение соседних постов
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("nav/{id:guid}")]
+        [ProducesResponseType(typeof(PostNavigationDto), StatusCodes.Status200OK)]
+        public Task<PostNavigationDto> GetPostNavigationAsync([FromRoute] Guid id) => _postService.GetPostNavigationAsync(id);
+
+        /// <summary>
+        /// Получение рекомендаций на основе поста
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("like/{id:guid}")]
+        [ProducesResponseType(typeof(IEnumerable<PostListItemDto>), StatusCodes.Status200OK)]
+        public async Task<IEnumerable<PostListItemDto>> GetRecommendationAsync([FromRoute] Guid id)
+        {
+            var posts = await _postService.GetRecommendationsAsync(id);
+            return FixCoverPath(posts);
+        }
+
+        /// <summary>
+        /// Получение самых популярных постов
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("popular")]
+        [ProducesResponseType(typeof(IEnumerable<PostListItemDto>), StatusCodes.Status200OK)]
+        public async Task<IEnumerable<PostListItemDto>> GetPopularPostsAsync()
+        {
+            var posts = await _postService.GetPopularPostsAsync();
+            return FixCoverPath(posts);
+        }
+
+        private string GetCoverFullPath(string path)
         {
             var baseUri = $"{Request.Scheme}://{Request.Host.Host}:{Request.Host.Port ?? 80}";
             var folderName = Path.Combine(baseUri, "img");
-            foreach (var post in _posts)
+
+            if (string.IsNullOrEmpty(path))
             {
-                post.Cover = Path.Combine(folderName, post.Cover);
+                return Path.Combine(baseUri, "post.jpg");
             }
 
-            IEnumerable<PostLinkDto>? result;
-            if (!string.IsNullOrEmpty(filter.Tag))
-            {
-                result = _posts.Where(p => p.MainTag == filter.Tag);
-            }
-            else if (!string.IsNullOrEmpty(filter.Author))
-            {
-                result = _posts.Where(p => p.Author == filter.Author);
-            }
-            else
-            {
-                result = _posts;
-            }
-
-            return result;
+            return Path.Combine(folderName, path);
         }
 
-        [HttpGet("{slug}")]
-        public async Task<IActionResult> GetPostAsync([FromRoute] string slug, [FromServices] IHostEnvironment env)
+        private IEnumerable<PostListItemDto> FixCoverPath(IEnumerable<PostListItemDto> posts)
         {
-            var post = _posts.Find(p => p.Slug == slug);
-            if (post != null)
+            var postsList = posts.ToList();
+
+            foreach (var post in postsList)
             {
-                var baseUri = $"{Request.Scheme}://{Request.Host.Host}:{Request.Host.Port ?? 80}";
-                var folderName = Path.Combine(baseUri, "img");
-
-                string content = string.Empty;
-                var testContentFile = Path.Combine(env.ContentRootPath, "wwwroot", "files", "test.md");
-                using (StreamReader streamReader = new(testContentFile, Encoding.UTF8))
-                {
-                    content = streamReader.ReadToEnd();
-                }
-
-                return Ok(new PostDto
-                {
-                    Author = post.Author,
-                    Content = content,
-                    Cover = Path.Combine(folderName, post.Cover),
-                    DatePublished = post.DatePublished,
-                    Slug = slug,
-                    Tags = new List<TagDto>()
-                    {
-                        new TagDto(Guid.NewGuid(), post.MainTag)
-                    },
-                    Title = post.Title
-                });
+                post.Cover = GetCoverFullPath(post.Cover);
             }
-            return NotFound();
-        }
 
-        private static List<PostLinkDto> GeneratePosts()
-        {
-            return new List<PostLinkDto>
-            {
-                new()
-                {
-                    Title = "Is the Designer Facing Extinction?",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today,
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-1.jpg",
-                    MainTag = "Coding",
-                    Slug = "is-the-designer-facing-extinction"
-                },
-                new()
-                {
-                    Title = "Guide to WordPress Post Revisions",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today.AddDays(-1),
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-2.jpg",
-                    MainTag = "Coding",
-                    Slug = "guide-to-wordPress-post-revisions"
-                },
-                new()
-                {
-                    Title = "How To Choose The Right Hosting For Your Blog",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today.AddDays(-2),
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-3.jpg",
-                    MainTag = "Hosting",
-                    Slug = "how-to-choose-the-right-hosting-for-your-blog"
-                },
-                new()
-                {
-                    Title = "Teach Your Kids to Code Playground with Tynker",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today.AddDays(-3),
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-4.jpg",
-                    MainTag = "Design",
-                    Slug = "teach-your-kids-to-code-playground-with-tynker"
-                },
-                new()
-                {
-                    Title = "Getting Started with JavaScript Promises",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today.AddDays(-4),
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-5.jpg",
-                    MainTag = "Coding",
-                    Slug = "getting-started-with-javascript-promises"
-                },
-                new()
-                {
-                    Title = "Surface Studio vs iMac – Which Should You Pick?",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today.AddDays(-5),
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-6.jpg",
-                    MainTag = "Design",
-                    Slug = "surface-studio-vs-imac"
-                },
-                new()
-                {
-                    Title = "Create Device Mockups in Browser with DeviceMock",
-                    Author = "Terehoff",
-                    DatePublished = DateTime.Today.AddDays(-6),
-                    Description =
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen bo…",
-                    Cover = "post-7.jpg",
-                    MainTag = "Coding",
-                    Slug = "create-device-mockups-in-browser-with-deviceMock"
-                }
-            };
+            return postsList;
         }
     }
 }

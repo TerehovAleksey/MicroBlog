@@ -1,0 +1,42 @@
+﻿@page "/register"
+@layout EmptyLayout
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<div class="login">
+    <EditForm Model="@_model" OnValidSubmit="RegisterUser">
+        <DataAnnotationsValidator />
+        <div class="col mb-3">
+            <label for="loginEmail">@Strings.Email</label>
+            <input @bind="_model.Email" type="email" class="form-control" id="loginEmail" placeholder="@Strings.Email" autofocus>
+            <ValidationMessage For="@(() => _model.Email)"></ValidationMessage>
+        </div>
+        <div class="col mb-3">
+            <label for="loginPassword">@Strings.Password</label>
+            <input @bind="_model.Password" type="password" class="form-control" id="loginPassword" placeholder="@Strings.Password">
+            <ValidationMessage For="@(() => _model.Password)"></ValidationMessage>
+        </div>
+        <div class="col mb-3">
+            <label for="loginPassword">@Strings.PasswordConfirmation</label>
+            <input @bind="_model.ConfirmPassword" type="password" class="form-control" id="loginPassword" placeholder="@Strings.PasswordConfirmation">
+            <ValidationMessage For="@(() => _model.ConfirmPassword)"></ValidationMessage>
+        </div>
+        <div class="col text-center">
+            <button type="submit" class="button">@Strings.Login</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    private UserForRegistrationDto _model = new UserForRegistrationDto();
+
+    private async Task RegisterUser()
+    {
+        var registerResult = await AuthService.RegisterUser(_model);
+        if (registerResult)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}

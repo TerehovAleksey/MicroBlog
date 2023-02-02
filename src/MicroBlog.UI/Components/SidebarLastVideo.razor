@@ -1,18 +1,29 @@
 ﻿@inject IYoutubeService YoutubeService
 
-@if (!string.IsNullOrEmpty(_src))
+@if (_srcs is not null)
 {
     <SidebarCard Title="@Strings.LastOnYouTube">
-        <SidebarIframe Src="@_src"/>
+        @foreach (var src in _srcs)
+        {
+            <SidebarIframe Src="@src" />
+        }
     </SidebarCard>
 }
 
 @code {
-    private string? _src;
+
+    private IEnumerable<string>? _srcs;
 
     protected override async Task OnInitializedAsync()
     {
-        _src = await YoutubeService.GetLastVideo();
+        try
+        {
+            _srcs = await YoutubeService.GetLastVideosAsync();
+        }
+        catch (Exception _)
+        {
+            //ignore
+        }
     }
 
 }

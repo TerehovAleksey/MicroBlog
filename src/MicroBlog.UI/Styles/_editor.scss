@@ -1,0 +1,58 @@
+﻿.admin-layout {
+
+    main {
+        font-family: Open Sans,Helvetica Neue,Helvetica,Arial,Nanum Barun Gothic,맑은고딕,Malgun Gothic,sans-serif;
+
+        .tavenem-markdownEditor {
+            height: 50rem;
+        }
+
+        label {
+            color: #555;
+            display: block;
+            font-weight: 600;
+            margin: 10px 0 5px;
+            font-size: 12px;
+        }
+
+        input[type=text] {
+            border: 1px solid #e1e3e9;
+            border-radius: 2px;
+            color: #333;
+            height: 30px;
+            padding: 0 12px;
+            width: 100%;
+
+            &:focus {
+                border-color: transparent;
+                outline: 1px solid #00a9ff;
+            }
+        }
+
+        .ok-button {
+            background-color: #00a9ff;
+            color: #fff;
+            height: 32px;
+            min-width: 63px;
+            outline-color: #009bf2;
+            border: none;
+            border-radius: 2px;
+            font-size: 13px;
+        }
+
+        .post-editor {
+            margin-top: 20px;
+        }
+
+        .form-group .autocomplete {
+            z-index: 1060;
+            position: absolute;
+            left: 0;
+            right: 0;
+            max-height: 300px;
+            overflow: hidden;
+            overflow-y: auto;
+            border-radius: .3rem;
+        }
+    }
+}

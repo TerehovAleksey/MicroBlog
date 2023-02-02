@@ -7,10 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Validations" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.4.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     </ItemGroup>
 
