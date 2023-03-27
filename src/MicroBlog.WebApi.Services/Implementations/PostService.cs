@@ -37,7 +37,8 @@ public class PostService : IPostService
 
         if (!string.IsNullOrEmpty(filter.Author))
         {
-            posts = posts.Where(p => p.User.UserName.ToLower().Contains(filter.Author.ToLower()));
+            posts = posts.Where(p => 
+            p.User.UserName.ToLower().Contains(filter.Author.ToLower()));
         }
 
         if (filter.Date != null)
