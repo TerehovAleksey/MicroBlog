@@ -1,0 +1,222 @@
+﻿@page "/admin/posts"
+@inject IPostService PostService
+@layout AdminLayout
+@attribute [Authorize]
+
+<div class="d-flex align-items-center pb-2">
+    <label for="select-all-check" class="form-check" data-bs-toggle="tooltip" title="Выбрать всё">
+        <input id="select-all-check" type="checkbox" class="form-check-input" @onchange="(arg => CheckAll(arg))" />
+    </label>
+
+    <a class="btn btn-primary mx-3" href="/admin/editor">Новый пост</a>
+
+    <div class="dropdown">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownPostAction" data-bs-toggle="dropdown" aria-expanded="false">Действие</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownPostAction">
+            <button type="button" class="dropdown-item text-gold" @onclick="(async ()=> await RunGroupAction(GroupAction.Feature))">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="15" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <span>Избранное</span>
+            </button>
+            <button type="button" class="dropdown-item text-success" @onclick="(async ()=> await RunGroupAction(GroupAction.Publish))">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                </svg>
+                <span>Опубликовать</span>
+            </button>
+            <button type="button" class="dropdown-item text-secondary" @onclick="(async ()=> await RunGroupAction(GroupAction.UnPublish))">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 24 24">
+                    <path d="M6 12.5C6 11.6716 6.67157 11 7.5 11H16.5C17.3284 11 18 11.6716 18 12.5C18 13.3284 17.3284 14 16.5 14H7.5C6.67157 14 6 13.3284 6 12.5Z" />
+                </svg>
+                <span>Отменить публикацию</span>
+            </button>
+            <button type="button" class="dropdown-item text-danger" @onclick="(async ()=> await RunGroupAction(GroupAction.Delete))">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+                <span>Удалить</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="dropdown dropdown-flush ms-auto ms-3">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterByStatus" data-bs-toggle="dropdown" aria-expanded="false">
+            @FilterLabel
+        </button>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="filterByStatus">
+            <button @onclick="(async () => await Filter(PublishedStatus.All))" class="dropdown-item">Все</button>
+            <button @onclick="(async () => await Filter(PublishedStatus.Drafts))" class="dropdown-item">Черновик</button>
+            <button @onclick="(async () => await Filter(PublishedStatus.Published))" class="dropdown-item">Опубликовано</button>
+            <button @onclick="(async () => await Filter(PublishedStatus.Featured))" class="dropdown-item">Избранное</button>
+        </div>
+    </div>
+</div>
+
+@if (_posts is not null && _posts.Any())
+{
+    <ul class="list">
+        <Virtualize Items="_posts" Context="post">
+            <li class="list-item">
+                <label class="list-check form-check" data-bs-toggle="tooltip" title="Выбрать">
+                    <input type="checkbox" @bind="post.IsSelected" class="list-check-input form-check-input">
+                </label>
+                @{
+                    var link = $"/admin/editor/{post.Id}";
+                }
+                <NavLink class="list-title" href="@link">
+                    @post.Title
+                </NavLink>
+                <span class="list-text ms-auto">
+                    @(post.DatePublished == null ? "Черновик" : ((DateTime)post.DatePublished).ToShortDateString())
+                </span>
+                <button class="list-btn" @onclick="(async () => await Publish(post.Id, post.DatePublished == null))">
+                    @if (post.DatePublished is not null)
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check link-success" viewBox="0 0 16 16" data-bs-toggle="tooltip" title="опубликован">
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash link-secondary" viewBox="0 0 24 24" data-bs-toggle="tooltip" title="draft">
+                            <path d="M6 12.5C6 11.6716 6.67157 11 7.5 11H16.5C17.3284 11 18 11.6716 18 12.5C18 13.3284 17.3284 14 16.5 14H7.5C6.67157 14 6 13.3284 6 12.5Z" />
+                        </svg>
+                    }
+                </button>
+                <button class="list-btn" @onclick="(async () => await Featured(post.Id, !post.IsFeatured))">
+                    @if (post.IsFeatured)
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-star-fill link-gold" viewBox="0 0 16 16" data-bs-toggle="tooltip" title="черновик">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-star-fill link-secondary" viewBox="0 0 16 16" data-bs-toggle="tooltip" title="не черновик">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                        </svg>
+                    }
+                </button>
+                <button class="list-btn">
+                    <svg class="bi" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" data-bs-toggle="tooltip" title="Посмотреть">
+                        <path d="M7.85724 2.17097L6 4L7 5L8.93201 3.24577C9.89935 2.27845 11.4719 2.27845 12.4393 3.24577C13.4066 4.21308 13.4066 5.78571 12.4393 6.75303L10.5141 8.75674L11.5141 9.75674L13.5141 7.82783C15.0754 6.26652 15.0754 3.73225 13.5141 2.17094C11.9528 0.609657 9.41852 0.609688 7.85724 2.17097Z" />
+                        <path d="M3.24575 12.4392C2.2784 11.4719 2.2784 9.89935 3.24575 8.93201L5 7L4 6L2.17098 7.85721C0.609703 9.41849 0.609642 11.9528 2.17098 13.514C3.73226 15.0753 6.26656 15.0753 7.82784 13.514L9.5141 11.7567L8.5141 10.7567L6.75301 12.4392C5.78573 13.4066 4.2131 13.4066 3.24575 12.4392Z" />
+                        <path d="M4.99941 9.55426L9.52486 5.02878L10.6563 6.16016L6.13076 10.6856L4.99941 9.55426Z" />
+                    </svg>
+                </button>
+            </li>
+        </Virtualize>
+    </ul>
+}
+else
+{
+    <div class="align-items-center">
+        <p>Ничего не найдено</p>
+    </div>
+}
+
+@code {
+    private List<SelectablePostModel>? _posts;
+
+    private string FilterLabel { get; set; } = "Все";
+    private PublishedStatus FilterValue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var posts = await PostService.GetAllPostsAsync(FilterValue);
+        if (posts is not null)
+        {
+            _posts = posts.Select(p => new SelectablePostModel
+                {
+                    Id = p.Id,
+                    DatePublished = p.DatePublished,
+                    IsFeatured = p.IsFeatured,
+                    IsSelected = false,
+                    Title = p.Title
+                }).ToList();
+        }
+    }
+
+    private async Task Filter(PublishedStatus filter)
+    {
+        FilterValue = filter;
+        FilterLabel = filter switch
+        {
+            PublishedStatus.Published => "Опубликовано",
+            PublishedStatus.Drafts => "Черновик",
+            PublishedStatus.Featured => "Избранное",
+            _ => "Все"
+            };
+        await LoadAsync();
+    }
+
+    private async Task RunGroupAction(GroupAction action)
+    {
+        if (_posts is not null)
+        {
+            foreach (var post in _posts.Where(p => p.IsSelected))
+            {
+                switch (action)
+                {
+                    case GroupAction.Publish:
+                        if (post.DatePublished == null)
+                        {
+                            await PostService.PublishAsync(post.Id);
+                        }
+                        break;
+                    case GroupAction.UnPublish:
+                        if (post.DatePublished != null)
+                        {
+                            await PostService.UnPublishAsync(post.Id);
+                        }
+                        break;
+                    case GroupAction.Feature:
+                        await PostService.FeatureAsync(post.Id, !post.IsFeatured);
+                        break;
+                    case GroupAction.Delete:
+                        await PostService.DeleteAsync(post.Id);
+                        break;
+                }
+            }
+        }
+        await LoadAsync();
+    }
+
+    private void CheckAll(ChangeEventArgs? args)
+    {
+        var isChecked = args != null && (bool)args.Value!;
+        if (_posts is not null)
+        {
+            foreach (var post in _posts)
+            {
+                post.IsSelected = isChecked;
+            }
+        }
+        StateHasChanged();
+    }
+
+    private async Task Publish(Guid postId, bool state)
+    {
+        if (state)
+        {
+            await PostService.PublishAsync(postId);
+        }
+        else
+        {
+            await PostService.UnPublishAsync(postId);
+        }
+        await LoadAsync();
+    }
+
+    private async Task Featured(Guid postId, bool state)
+    {
+        await PostService.FeatureAsync(postId, state);
+        await LoadAsync();
+    }
+}

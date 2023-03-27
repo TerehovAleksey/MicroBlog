@@ -7,8 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.1" PrivateAssets="all" />
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="Markdig" Version="0.31.0" />
+    <PackageReference Include="Markdown.ColorCode" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.4" PrivateAssets="all" />
+    <PackageReference Include="Tavenem.Blazor.MarkdownEditor" Version="1.0.2" />
+    <PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="10.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +61,14 @@
     <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-Thin.ttf" />
     <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\FiraSans-ThinItalic.ttf" />
     <_ContentIncludedByDefault Remove="wwwroot\fonts\firasans\OFL.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroBlog.UI.Core\MicroBlog.UI.Core.csproj" />
   </ItemGroup>
 
 </Project>

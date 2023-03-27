@@ -1,0 +1,55 @@
+﻿@inject IPostService PostService
+@inject INavigationService NavigationService
+
+@if (_postNavigation is not null)
+{
+    <div class="post-navigation">
+        <ul class="post-nav">
+            @if (_postNavigation.PreviousPost is not null)
+            {
+                <li class="post-prev">
+                    <button class="post-prev-link" @onclick="@(()=>NavigationService.Navigate(_postNavigation.PreviousPost.Slug))" rel="prev">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                            </svg>
+                        </span>
+                        <span class="post-link-title">@_postNavigation.PreviousPost.Title</span>
+                    </button>
+                </li>
+            }
+
+            @if (_postNavigation.NextPost is not null)
+            {
+                <li class="post-next">
+                    <button class="post-next-link" @onclick="@(()=>NavigationService.Navigate(_postNavigation.NextPost.Slug))" rel="next">
+                        <span class="post-link-title">@_postNavigation.NextPost.Title</span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+
+@code {
+
+    private PostNavigationDto? _postNavigation;
+
+    [Parameter, EditorRequired]
+    public Guid PostId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (PostId != Guid.Empty)
+        {
+            _postNavigation = await PostService.GetPostNavigation(PostId);
+        }
+    }
+
+}

@@ -1,0 +1,43 @@
+﻿@implements IDisposable
+
+@if (IsLoading && _isLoading)
+{
+    <div class="loader" style="@(IsFullPageLoader ? "position: absolute;" : "")">
+        <div class="loader-content"></div>
+    </div>
+}
+
+@code {
+    private Timer? _timer;
+    private bool _isLoading;
+
+    [Parameter]
+    public bool IsFullPageLoader { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (IsLoading == true)
+        {
+            // задержка в 200мс на появление лоадера
+            _timer = new Timer(OnTimerElapsed, true, 200, 0);
+        }
+        else
+        {
+            _timer?.Dispose();
+        }
+    }
+
+    private void OnTimerElapsed(object? state)
+    {
+        _isLoading = true;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}

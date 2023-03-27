@@ -1,0 +1,158 @@
+﻿@page "/admin/editor"
+@page "/admin/editor/{id}"
+@inject IPostService PostService
+@inject IFileService FileService
+@inject NavigationManager NavigationManager
+@layout AdminLayout
+@attribute [Authorize]
+
+<PageTitle>Редактор</PageTitle>
+<Loader IsLoading="_isLoading" />
+@if (!_isLoading)
+{
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <div class="d-flex justify-content-start my-2">
+                <button class="ok-button" @onclick="async () => await Save()">Сохранить</button>
+                <button class="ok-button ms-2" @onclick="async () => await Publish()">Опубликовать</button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="post-title">Название</label>
+                    <InputText type="text" id="post-title" @bind-Value="_post.Title" />
+                </div>
+                <div class="col">
+                    <label for="post-slug">Ссылка</label>
+                    <InputText type="text" id="post-slug" @bind-Value="_post.Slug" />
+                </div>
+            </div>
+            <div>
+                <label for="post-description">Описание</label>
+                <InputText type="text" id="post-description" @bind-Value="_post.Description" />
+            </div>
+            <div>
+                <TagSelector CurrentTags="_post.Tags" OnTagsChanged="@(tags => _post.Tags = tags)" />
+            </div>
+        </div>
+        <div class="ms-2 p-2">
+            @if (!string.IsNullOrEmpty(_cover))
+            {
+                <div>
+                    <img alt="cover" src="@_cover" style="max-width: 600px; max-height:500px;" />
+                </div>
+            }
+            <div>
+                <InputFile class="mt-1" OnChange="LoadCover" />
+            </div>
+
+        </div>
+    </div>
+    <div class="post-editor">
+        <MarkdownEditor @bind-Value="_post.Content"
+                    LockEditMode="false"
+                    EditMode="EditMode.Markdown"
+                    PreviewStyle="MarkdownPreviewStyle.Split" />
+    </div>
+}
+
+@code {
+    private Guid _id;
+    private bool _isLoading;
+    private PostEditDto _post = new();
+    private string? _cover;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if(!string.IsNullOrEmpty(Id))
+        {
+            _id = new Guid(Id);
+            await Load(_id);
+        }
+        else
+        {
+            _post = new PostEditDto();
+            _cover = $"{Config.SERVER_URI}/post.jpg";
+        }
+    }
+
+    private async Task Load(Guid id)
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            var post = await PostService.GetPostByIdAsync(id);
+
+            if (post is not null)
+            {
+                _cover = post.Cover;
+                _post = new PostEditDto
+                    {
+                        Title = post.Title,
+                        Content = post.Content ?? string.Empty,
+                        Description = post.Description ?? string.Empty,
+                        Slug = post.Slug,
+                        Tags = post.Tags
+                    };
+            }
+            else
+            {
+                _cover = $"{Config.SERVER_URI}/post.jpg";
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Save()
+    {
+        var result = false;
+
+        if (_id == Guid.Empty)
+        {
+            result = await PostService.CreatePostAsync(_post);
+        }
+        else
+        {
+            result = await PostService.UpdatePostAsync(_id, _post);
+        }
+
+        if (result)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private Task Publish()
+    {
+        return Task.CompletedTask;
+    }
+
+    private async Task LoadCover(InputFileChangeEventArgs e)
+    {
+        const long maxFileSize = 1024 * 1024 * 5;
+
+        var file = e.File;
+
+        using var content = new MultipartFormDataContent();
+
+        var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+
+        content.Add(content: fileContent, name: "\"files\"", fileName: file.Name);
+
+        var result = await FileService.UploadImage(content);
+
+        if (!string.IsNullOrEmpty(result))
+        {
+            _post.Cover = result;
+            _cover = $"{Config.SERVER_URI}/img/{result}";
+        }
+    }
+}

@@ -1,0 +1,43 @@
+﻿@inject IPostService PostService
+@inject INavigationService NavigationService
+
+@if (_posts?.Any() ?? false)
+{
+    <SidebarCard Title="Возможно вам будет интересно" IsSmallTitle="true">
+        <div class="related-ready">
+            <ul class="related-posts">
+                @foreach (var post in _posts)
+                {
+                    <li class="related-item">
+                        <a class="post-image-link" @onclick="@(() => NavigationService.Navigate(post.Slug))">
+                            <img class="post-thumb" src="@post.Cover" alt="post">
+                        </a>
+                        <h2 class="post-title">
+                            <a @onclick="@(() => NavigationService.Navigate(post.Slug))">@post.Title</a>
+                        </h2>
+                        <div class="post-meta">
+                            <span class="oi oi-clock"></span>
+                            @post.DatePublished.ToShortDateString()
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>       
+    </SidebarCard>
+}
+
+@code {
+
+    private IEnumerable<PostListItemDto>? _posts;
+
+    [Parameter, EditorRequired]
+    public Guid PostId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (PostId != Guid.Empty)
+        {
+            _posts = await PostService.GetRecommendationsAsync(PostId);
+        }
+    }
+}

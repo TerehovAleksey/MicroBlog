@@ -1,0 +1,20 @@
+﻿@inject IFilterService FilterService
+
+@if(Tags != null && Tags.Any())
+{
+    <ul class="tags-list">
+        @foreach (var tag in Tags)
+        {
+            <li>
+                <button @onclick="() => FilterService.SearchByTag(tag)">
+                    @tag
+                </button>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IEnumerable<string>? Tags { get; set; }
+}

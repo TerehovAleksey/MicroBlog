@@ -1,6 +1,6 @@
 ﻿<div class="card border-light mb-4">
     <div class="card-body">
-        <h5 class="card-title">@Title</h5>
+        <h5 class="card-title@(IsSmallTitle?" card-title-small":"")">@Title</h5>
         <div class="card-content">
             @ChildContent
         </div>
@@ -11,7 +11,10 @@
 
     [Parameter]
     public string Title { get; set; } = "Title";
-    
+
+    [Parameter]
+    public bool IsSmallTitle { get; set; }
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

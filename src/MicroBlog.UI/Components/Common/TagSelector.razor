@@ -1,0 +1,75 @@
+﻿@inject IPostService PostService
+
+<div class="row">
+    <div class="col">
+        <Autocomplete Label="Теги" Placeholder="Выберете тег для добавления" TItem="string"
+                      Items="_tags" DispaySelector="@(i => i)"
+                      OnItemSelected="AddTagToSelected"
+                      OnItemAdded="CreateTag" />
+    </div>
+    <div class="col d-flex align-items-end">
+        @foreach (var item in _selectedTags)
+        {
+            <button class="ok-button me-2" @onclick="(()=>RemoveTagToSelected(item))">@item</button>
+        }
+    </div>
+</div>
+
+@code {
+
+    private List<string> _allTags = new();
+    private List<string> _tags = new();
+    private List<string> _selectedTags = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var tags = await PostService.GetAllTagsAsync();
+        if (tags is not null)
+        {
+            _allTags = tags.Select(x => x.Name).ToList();
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (CurrentTags.Any())
+        {
+            _selectedTags = CurrentTags.ToList();
+        }
+        _tags = _allTags.Except(_selectedTags).ToList();
+    }
+
+    [Parameter]
+    public IEnumerable<string> CurrentTags { get; set; } = new List<string>();
+
+    [Parameter]
+    public EventCallback<IEnumerable<string>> OnTagsChanged { get; set; }
+
+    private async Task AddTagToSelected(string tag)
+    {
+        _tags.Remove(tag);
+        _selectedTags.Add(tag);
+        await OnTagsChanged.InvokeAsync(_selectedTags);
+        StateHasChanged();
+    }
+
+    private async Task RemoveTagToSelected(string tag)
+    {
+        _tags.Add(tag);
+        _tags = _tags.OrderBy(t => t).ToList();
+        _selectedTags.Remove(tag);
+        await OnTagsChanged.InvokeAsync(_selectedTags);
+        StateHasChanged();
+    }
+
+    private async Task CreateTag(string name)
+    {
+        var isExits = _tags.Union(_selectedTags).Any(t => t.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        if (isExits)
+        {
+            return;
+        }
+
+        await AddTagToSelected(name);
+    }
+}

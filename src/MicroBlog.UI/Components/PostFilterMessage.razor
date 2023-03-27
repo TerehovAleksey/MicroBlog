@@ -1,6 +1,4 @@
-﻿@using MicroBlog.UI.Models
-@using MicroBlog.UI.Services
-@inject IFilterService FilterService
+﻿@inject IFilterService FilterService
 
 @if (IsShowFilterMessage)
 {
@@ -9,34 +7,34 @@
             @GetText()
             <span class="search-label">@GetLabel()</span>
         </span>
-        <button class="show-more" @onclick="() => FilterService.Reset()">Show All</button>
+        <button class="show-more" @onclick="@(() => FilterService.Reset())">@Strings.ShowAll</button>
     </div>
 }
 
 @code {
-    
+
     [Parameter]
     public PostFilter? Filter { get; set; }
 
     private bool IsShowFilterMessage => Filter is not null &&
                                         (!string.IsNullOrEmpty(Filter.Tag) || !string.IsNullOrEmpty(Filter.Author) ||
-                                         !string.IsNullOrEmpty(Filter.Date) || !string.IsNullOrEmpty(Filter.Query));
+                                         Filter.Date != null || !string.IsNullOrEmpty(Filter.Query));
 
     private string GetText()
     {
         if (!string.IsNullOrEmpty(Filter?.Query))
         {
-            return "Showing posts matching the search for";
+            return Strings.ShowingPostsMatchingTheSearchFor;
         }
         if (!string.IsNullOrEmpty(Filter?.Tag))
         {
-            return "Showing posts with the label";
+            return Strings.ShowingPostsWithTheLabel;
         }
         if (!string.IsNullOrEmpty(Filter?.Author))
         {
-            return "Showing posts by";
+            return Strings.ShowingPostsBy;
         }
-        return !string.IsNullOrEmpty(Filter?.Date) ? "Showing posts for" : string.Empty;
+        return Filter?.Date != null ? Strings.ShowingPostsFor : string.Empty;
     }
     
     private string GetLabel()
@@ -53,6 +51,6 @@
         {
             return Filter.Author;
         }
-        return !string.IsNullOrEmpty(Filter?.Date) ? Filter.Date : string.Empty;
+        return Filter?.Date != null ? ((DateTime)Filter.Date).ToString("dd.MM.yyyy") : string.Empty;
     }
 }

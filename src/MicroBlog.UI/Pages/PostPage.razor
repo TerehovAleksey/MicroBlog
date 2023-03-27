@@ -1,9 +1,52 @@
-﻿@page "/post"
+﻿@page "/post/{slug}"
+@inject IPostService PostService
+@inject INavigationService NavigationService
 
-<PageTitle>Post</PageTitle>
-
-<Post/>
+<PageTitle>@_post?.Title</PageTitle>
+<Loader IsLoading="_isLoading" />
+@if (_post is not null)
+{
+    <Post PostModel="_post" />
+    <PostNavigation PostId="_post.Id"/>
+    <PostRecommendation PostId="_post.Id"/>
+    <PostComments PostId="_post.Id"/>
+}
 
 @code {
 
+    private bool _isLoading;
+    private PostDto? _post;
+
+    [Parameter]
+    public string? Slug { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationService.Navigated += OnNavigated;
+        await LoadPost(Slug);
+    }
+
+    private async Task LoadPost(string? slug)
+    {
+        if (!string.IsNullOrWhiteSpace(slug))
+        {
+            _isLoading = true;
+            StateHasChanged();
+
+            try
+            {
+                _post = await PostService.GetPostAsync(slug);
+            }
+            finally
+            {
+                _isLoading = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void OnNavigated(string slug)
+    {
+        _ = LoadPost(slug);
+    }
 }

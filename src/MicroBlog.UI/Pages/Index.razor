@@ -1,64 +1,83 @@
 ﻿@page "/"
-@using MicroBlog.UI.Services
-@using MicroBlog.UI.Models
 @inject IPostService PostService
 @inject IFilterService FilterService
 @implements IDisposable
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@Strings.Home</PageTitle>
+<PostFilterMessage Filter="_filter" />
+<Loader IsLoading="_isLoading" />
 
-<PostFilterMessage Filter="_filter"/>
-
-@if (_cardsModel is not null)
+@if (_posts is not null && !_isLoading)
 {
-    @foreach (var post in _cardsModel.Posts)
+    @foreach (var post in _posts)
     {
-        <PostCard CardModel="post"/>
+        <PostCard Post="post" />
     }
 
-    if (!_cardsModel.Posts.Any())
+    if (!_posts.Any())
     {
         <div class="no-posts">
-            No results found
+            @Strings.NoResultsFound
         </div>
     }
 
-    else if (_cardsModel.Page < _cardsModel.TotalPages)
+    else if (_metaData.CurrentPage < _metaData.TotalPages)
     {
         <div class="text-center">
-            <button class="load-more">Load More</button>
+            <button class="load-more">@Strings.LoadMore</button>
         </div>
     }
     else
     {
         <div class="text-center">
-            <span class="load-more no-more">That is All</span>
+            <span class="load-more no-more">@Strings.ThatIsAll</span>
         </div>
     }
 }
 
-@code{
+@code {
 
-    private PostsModel? _cardsModel;
+    private MetaData _metaData = new();
+    private IEnumerable<PostListItemDto>? _posts;
     private PostFilter? _filter;
+    private bool _isLoading;
 
     protected override async Task OnInitializedAsync()
     {
         _filter = FilterService.Filter;
         FilterService.FilterChanged += FilterServiceOnFilterChanged;
-        await LoadPosts();
+        await LoadPosts(_filter);
     }
 
     private void FilterServiceOnFilterChanged(PostFilter filter)
     {
         _filter = filter;
-        Task.Run(LoadPosts);
+        Task.Run(async() => await LoadPosts(_filter));
     }
 
-    private async Task LoadPosts()
+    private async Task LoadPosts(PostFilter filter)
     {
-        _cardsModel = await PostService.GetPostsAsync(_filter);
+        _isLoading = true;
         StateHasChanged();
+
+        try
+        {
+            var posts = await PostService.GetPostsAsync(filter);
+            if (posts is not null)
+            {
+                _metaData = posts.MetaData;
+                _posts = posts;
+            }
+        }
+        catch (Exception)
+        {
+            //
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
     }
 
     public void Dispose()

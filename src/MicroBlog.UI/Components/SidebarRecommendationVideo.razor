@@ -1,19 +1,29 @@
-﻿@using MicroBlog.UI.Services
-@inject IYoutubeService YoutubeService
+﻿@inject IYoutubeService YoutubeService
 
-@if (!string.IsNullOrEmpty(_src))
+@if (_srcs is not null)
 {
-    <SidebarCard Title="Recommendation">
-        <SidebarIframe Src="@_src"/>
+    <SidebarCard Title="@Strings.Recommendation">
+        @foreach (var src in _srcs)
+        {
+            <SidebarIframe Src="@src" />
+        }
     </SidebarCard>
 }
 
 @code {
-    private string? _src;
+
+    private IEnumerable<string>? _srcs;
 
     protected override async Task OnInitializedAsync()
     {
-        _src = await YoutubeService.GetLastRecommendation();
+        try
+        {
+            _srcs = await YoutubeService.GetLastRecommendationsAsync();
+        }
+        catch (Exception _)
+        {
+            //ignore
+        }
     }
 
 }

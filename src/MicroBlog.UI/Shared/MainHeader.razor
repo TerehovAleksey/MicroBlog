@@ -1,12 +1,11 @@
-﻿@using MicroBlog.UI.Services
-@inject IFilterService FilterService
+﻿@inject IFilterService FilterService
 
 <header class="header">
     <nav class="navbar navbar-light navbar-expand-lg bg-light">
         <div class="container">
             @if (!_isSearchMode)
             {
-                <div class="d-flex align-items-center">
+                <div class="d-flex flex-grow-1 align-items-center">
                     <div class="header-logo me-3">
                         <a href="/">
                             <img src="img/logo.png" alt="logo" data-height="50" data-width="187">
@@ -15,29 +14,33 @@
                     <div class="header-menu">
                         <ul class="nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/">Home</a>
+                                <NavLink class="nav-link" href="/">@Strings.Home</NavLink>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Features</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Mega Menu</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Documentation</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Download This Template</a>
-                            </li>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <li class="nav-item">
+                                        <NavLink class="nav-link" href="/admin/posts">Editor</NavLink>
+                                    </li>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <li class="nav-item">
+                                        <NavLink class="nav-link" href="/register">Регистрация</NavLink>
+                                    </li>
+                                    <li class="nav-item">
+                                        <NavLink class="nav-link" href="/login">Вход</NavLink>
+                                    </li>
+                                </NotAuthorized>
+                            </AuthorizeView>
                         </ul>
                     </div>
                 </div>
-                <span class="oi oi-magnifying-glass" style="cursor: pointer;" @onclick="() => _isSearchMode = true"></span>
+                <span class="oi oi-magnifying-glass me-4" style="cursor: pointer;" @onclick="() => _isSearchMode = true"></span>
+                <span class="oi oi-person" style="cursor: pointer;" @onclick="() => _isMenuOpen = !_isMenuOpen"></span>
             }
             else
             {
                 <EditForm Model="_searchModel" OnValidSubmit="SearchSubmit">
-                    <InputText id="search" @bind-Value="_searchModel.Query" placeholder="Search this blog"/>
+                    <InputText id="search" @bind-Value="_searchModel.Query" placeholder="@Strings.SearchThisBlog"/>
                     <input style="display: none;" type="submit"/>
                 </EditForm>
                 <span class="oi oi-x" style="cursor: pointer;" @onclick="() => _isSearchMode = false"></span>
@@ -47,6 +50,7 @@
 </header>
 
 @code {
+    private bool _isMenuOpen;
     private bool _isSearchMode;
 
     private SearchModel _searchModel = new();
@@ -57,7 +61,7 @@
         _searchModel.Query = string.Empty;
         _isSearchMode = false;
     }
-    
+
     private class SearchModel
     {
         public string Query { get; set; } = string.Empty;

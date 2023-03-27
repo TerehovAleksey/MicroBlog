@@ -1,41 +1,73 @@
-﻿<div class="post">
-    <nav class="breadcrumb">
-        <a href="/">Home</a>
-        <span class="mx-2">></span>
-        <a href="/">Business</a>
-        <span class="mx-2">></span>
-        <span>The Psychology of Price in UX</span>
-    </nav>
-    <h1 class="post-title">The Psychology of Price in UX</h1>
-    <div class="post-meta">
-        <a class="post-author" href="#">
-            <span class="oi oi-person ms-2"></span>
-            Sora Blogging Tips
-        </a>
-        <a class="post-date" href="#">
-            <span class="oi oi-clock ms-2"></span>
-            March 17, 2016
-        </a>
+﻿@inject IFilterService FilterService
+
+@if (PostModel is not null)
+{
+    <div class="post">
+        <nav class="breadcrumb">
+            <NavLink href="/">@Strings.Home</NavLink>
+            @{
+                var mainTag = PostModel.Tags.FirstOrDefault();
+                if (mainTag is not null)
+                {
+                    <span class="mx-2">></span>
+                    <a href="#" @onclick="()=>FilterService.SearchByTag(mainTag)">@mainTag</a>
+                }
+            }
+            <span class="mx-2">></span>
+            <span>@PostModel.Title</span>
+        </nav>
+        <h1 class="post-title">@PostModel.Title</h1>
+        <div class="post-meta">
+            <a class="post-author" href="#">
+                <span class="oi oi-person ms-2"></span>
+                @PostModel.Author
+            </a>
+            <a class="post-date" href="#">
+                <span class="oi oi-clock ms-2"></span>
+                @PostModel.DatePublished.ToShortDateString()
+            </a>
+        </div>
+        <div class="post-body">
+            <img src="@PostModel.Cover" alt="post">
+            <div>
+                <br>
+            </div>
+            <div>
+                @((MarkupString)_content)
+            </div>
+        </div>
+        <div class="post-body">
+            <PostTags Tags="@PostModel.Tags" />
+        </div>
+        <div class="post-body">
+            <PostShare Slug="@PostModel.Slug" />
+        </div>
     </div>
-    <div class="post-body">
-        <img src="img/post.jpg" alt="post">
-        <div>
-            <br>
-        </div>
-        <div>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book <br><br><blockquote class="tr_bq">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</blockquote><br>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br><br>
-            <ul>
-                <li>Lorem Ipsum has been the industry's</li><li>The generated Lorem Ipsum is therefore always</li><li>Making this the first true generator </li>
-            </ul>
-            <div><br>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. </div>
-            <div><br>It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.<br><br>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. </div>
-        </div>
-        <div class="mt-4">
-             <SidebarTags />
-        </div>
-    </div>
-</div>
+}
+
 
 @code {
+    
+    private string _content = string.Empty;
+    private MarkdownPipeline _pipeline;
 
+    [Parameter, EditorRequired]
+    public PostDto? PostModel { get; set; }
+    
+    public Post()
+    {
+        _pipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .UseColorCode()
+        .Build();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (PostModel is not null && !string.IsNullOrEmpty(PostModel.Content))
+        {
+            _content = Markdown.ToHtml(PostModel.Content, _pipeline);
+        }
+        base.OnParametersSet();
+    }
 }

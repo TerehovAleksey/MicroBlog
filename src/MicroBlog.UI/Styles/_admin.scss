@@ -1,0 +1,67 @@
+﻿.admin-layout {
+
+    .text-gold {
+        color: #ff9f2e !important;
+    }
+
+    .link-gold {
+        color: #ff9f2e;
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        border-radius: .5rem;
+        position: relative;
+        border-bottom: 1px solid rgba(0,0,0,.02);
+        transition: background-color ease-in-out .15s;
+
+        &:hover {
+            background-color: #eee;
+        }
+
+        .list-check {
+            padding: 0;
+            margin: 0;
+            height: 3rem;
+            width: 3.5rem;
+            padding-left: 0;
+            position: relative;
+            font-weight: 500;
+            margin-left: -1rem;
+
+            input[type=checkbox] {
+                vertical-align: top;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                margin: 0;
+                transition: opacity ease-in-out .1s;
+            }
+        }
+
+        .list-title {
+            display: block;
+            flex-grow: 1;
+            margin-right: .5rem;
+            line-height: 3rem;
+            font-weight: 400;
+            font-size: .9375rem;
+            color: #1c1c1c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .list-btn {
+            background: none;
+            padding: 0 .5rem;
+            border: 0;
+            margin: 0 .5rem;
+            text-align: center;
+            height: 3rem;
+            color: #707a86;
+        }
+    }
+}

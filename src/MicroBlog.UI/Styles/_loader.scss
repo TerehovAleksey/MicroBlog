@@ -1,0 +1,41 @@
+﻿@import '_colors.scss';
+
+@keyframes loader-content {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader {
+    z-index: 10;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loader-content {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+    }
+
+    .loader-content:after {
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid $app-color-bg-light;
+        border-color: $app-color-accent transparent $app-color-accent transparent;
+        animation: loader-content 1.2s linear infinite;
+    }
+}
